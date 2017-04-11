@@ -33,7 +33,7 @@
     </bean>
 
     <!-- 4.扫描web相关的bean -->
-    <context:component-scan base-package="cn.acheng1314.mvc">
+    <context:component-scan base-package="cn.school.mvc">
         <!-- 制定扫包规则 ,只扫描使用@Controller注解的JAVA类 -->
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
