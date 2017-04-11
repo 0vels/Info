@@ -8,9 +8,7 @@ import cn.school.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by Administrator on 2016/9/25.
- */
+
 @Service("userService")
 public class UserServiceImpl implements UserService {
 

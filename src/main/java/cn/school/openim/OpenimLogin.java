@@ -37,14 +37,17 @@ public class OpenimLogin {
     }
 
     public static void main(String[] args) throws ApiException {
-        getIMUser();
+        String userId = "";
+        getIMUser(userId);
 //        delIMUser();
     }
 
-    public static void getIMUser() throws ApiException {
+
+
+    public static void getIMUser(String userId) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         OpenimUsersGetRequest req = new OpenimUsersGetRequest();
-        req.setUserids("wangzhennan");
+        req.setUserids(userId);
         OpenimUsersGetResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
         Gson gson = new Gson();
@@ -54,15 +57,15 @@ public class OpenimLogin {
 
     }
 
-    public static void delIMUser() throws ApiException {
+    public static void delIMUser(String userId) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         OpenimUsersDeleteRequest req = new OpenimUsersDeleteRequest();
-        req.setUserids("addtest1");
+        req.setUserids(userId);
         OpenimUsersDeleteResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
     }
 
-    public static void updateIMUser() throws ApiException {
+    public static void updateIMUser(JsonObject userJson) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         OpenimUsersUpdateRequest req = new OpenimUsersUpdateRequest();
         List<Userinfos> list2 = new ArrayList<Userinfos>();
@@ -83,7 +86,7 @@ public class OpenimLogin {
         System.out.println(rsp.getBody());
     }
 
-    public static void addIMUser() throws ApiException {
+    public static void addIMUser(JsonObject userJson) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         OpenimUsersAddRequest req = new OpenimUsersAddRequest();
         List<Userinfos> list2 = new ArrayList<Userinfos>();
