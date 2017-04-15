@@ -1,7 +1,9 @@
 package cn.school.openim;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
@@ -15,17 +17,19 @@ import com.taobao.api.response.OpenimUsersDeleteResponse;
 import com.taobao.api.response.OpenimUsersGetResponse;
 import com.taobao.api.response.OpenimUsersUpdateResponse;
 
+import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by wang on 2017/4/3.
  */
-public class OpenimLogin {
+public class Openim {
 
     private static String url = OpenimCommon.OpenimUrl;
     private static String appkey = OpenimCommon.Appkey;
     private static String secret = OpenimCommon.AppSecret;
+    private static String UID = "";
 
 
     public void get() {
@@ -37,8 +41,10 @@ public class OpenimLogin {
     }
 
     public static void main(String[] args) throws ApiException {
-        String userId = "";
+        String userId = "wangzhennan,zhangjunhui,addtest1";
+        JsonObject userJson = null;
         getIMUser(userId);
+        addIMUser(userJson);
 //        delIMUser();
     }
 
@@ -51,9 +57,26 @@ public class OpenimLogin {
         OpenimUsersGetResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
         Gson gson = new Gson();
-        JsonObject userinfos = gson.fromJson(rsp.getBody(),JsonObject.class);
-        System.out.println(userinfos);
+        JsonObject userinfos0 = gson.fromJson(rsp.getBody(),JsonObject.class);
+        System.out.println(userinfos0);
+        JsonObject openim_users_get_response = gson.fromJson(userinfos0,JsonObject.class);
+        JsonObject userinfos = gson.fromJson(openim_users_get_response, JsonObject.class);
+        JsonArray userinfos11 = gson.fromJson(userinfos, JsonArray.class);
+//        Response response = new Gson().fromJson(userinfos11, Response.class);
+        UID = gson.fromJson(userinfos11.get(0),String.class);
+        System.out.println("getIMUser"+UID);
+
 //        JsonArray userinfos = gson.fromJson(rsp.getBody(),JsonArray.class);
+    }
+
+    class Response
+    {
+        @SerializedName("userinfos")
+        JsonArray key;
+    }
+
+    public static void addIMUser2DB(){
+        Gson gson = new Gson();
 
     }
 
@@ -75,7 +98,7 @@ public class OpenimLogin {
         obj3.setIconUrl("http://xxx.com/xxx");
         obj3.setEmail("uid@taobao.com");
         obj3.setMobile("18600000000");
-        obj3.setUserid("imuser123");
+        obj3.setUserid("addtest1");
         obj3.setPassword("xxxxxx");
         obj3.setExtra("{}");
         obj3.setName("demo");
@@ -104,7 +127,7 @@ public class OpenimLogin {
         obj3.setGender("M");
         req.setUserinfos(list2);
         OpenimUsersAddResponse rsp = client.execute(req);
-        System.out.println(rsp.getBody());
+        System.out.println("addIMUser"+rsp.getBody());
     }
 
 }

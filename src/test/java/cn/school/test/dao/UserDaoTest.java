@@ -17,10 +17,10 @@ public class UserDaoTest extends BaseTest {
     @Test
     public void testAdd() {
         User user = new User();
-        user.setLoginId("pc147852369");
-        user.setName("雨下一整夜");
-        user.setPwd("123456");
-        user.setSex("未知");
+        user.setLoginId("123455678");
+        user.setName("添加一个账号");
+        user.setPwd("654321");
+        user.setSex("女");
         int result = 0; //受影响的行数默认为0
         try {
             result = userDao.add(user);
