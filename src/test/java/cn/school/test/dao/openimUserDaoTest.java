@@ -23,7 +23,8 @@ public class openimUserDaoTest extends BaseTest {
         OpenimUser user = new OpenimUser();
         String userId = "wangzhennan,zhangjunhui,addtest1";
         try {
-            OpenimUserController.getIMUser(userId);
+            OpenimUserController openimUserController = new OpenimUserController();
+            openimUserController.getIMUser(userId);
         } catch (ApiException e) {
             e.printStackTrace();
         }

@@ -1,11 +1,10 @@
 package cn.school.openim;
 
 
-import cn.school.daoImpl.AddOpenimUser;
+import cn.school.dao.OpenimUserDao;
 import cn.school.domain.OpenimUser;
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
-import com.google.gson.stream.JsonReader;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
@@ -18,6 +17,7 @@ import com.taobao.api.response.OpenimUsersAddResponse;
 import com.taobao.api.response.OpenimUsersDeleteResponse;
 import com.taobao.api.response.OpenimUsersGetResponse;
 import com.taobao.api.response.OpenimUsersUpdateResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 import java.rmi.server.UID;
@@ -28,6 +28,9 @@ import java.util.List;
  * Created by wang on 2017/4/3.
  */
 public class OpenimUserController {
+
+    @Autowired
+    private OpenimUserDao openimUserDao;
 
     private static String url = OpenimCommon.OpenimUrl;
     private static String appkey = OpenimCommon.Appkey;
@@ -50,8 +53,8 @@ public class OpenimUserController {
 //        delIMUser();
     }
 
-
-    public static void getIMUser(String userId) throws ApiException {
+    int result = 0; //受影响的行数默认为0
+    public void getIMUser(String userId) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         OpenimUsersGetRequest req = new OpenimUsersGetRequest();
         req.setUserids(userId);
@@ -64,8 +67,10 @@ public class OpenimUserController {
         JsonObject genius_2 = genius_1.get("userinfos").getAsJsonObject();
         JsonArray genius_3 = genius_2.get("userinfos").getAsJsonArray();
         for (JsonElement je : genius_3) {
-            AddOpenimUser.addOpenimUser(je);
 
+            Gson gson = new Gson();
+            OpenimUser openimUser = gson.fromJson(je, OpenimUser.class);
+            result = openimUserDao.add(openimUser);
             System.out.println("je"+je);
         }
 

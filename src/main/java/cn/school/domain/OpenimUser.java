@@ -1,5 +1,7 @@
 package cn.school.domain;
 
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
 
 /**
@@ -99,7 +101,7 @@ public class OpenimUser implements Serializable {
     private int age;
     private String career;
     private String email;
-    private String extra;
+    private JsonObject extra;
     private String gender;
     private String gmt_modified;
     private String icon_url;
@@ -115,6 +117,8 @@ public class OpenimUser implements Serializable {
     private String vip;
     private String wechat;
     private String weibo;
+
+
 
     public void setAddress(String address) {
         this.address = address;
@@ -164,11 +168,11 @@ public class OpenimUser implements Serializable {
         return email;
     }
 
-    public void setExtra(String extra) {
+    public void setExtra(JsonObject extra) {
         this.extra = extra;
     }
 
-    public String getExtra() {
+    public JsonObject getExtra() {
         return extra;
     }
 
@@ -292,6 +296,20 @@ public class OpenimUser implements Serializable {
         return weibo;
     }
 
-//    }
+    @Override
+    public String toString() {
+        return "User{" +
+                "userid='" + userid + '\'' +
+                ", age='" + age + '\'' +
+                ", name='" + name + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", email='" + email + '\'' +
+                ", icon_url=" + icon_url +
+                ", extra='" + extra + '\'' +
+                ", password='" + password + '\'' +
+                ", career=" + career +
+                '}';
+    }
+
 }
 
