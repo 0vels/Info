@@ -1,9 +1,11 @@
 package cn.school.openim;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+
+import cn.school.daoImpl.AddOpenimUser;
+import cn.school.domain.OpenimUser;
+import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.stream.JsonReader;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
@@ -17,6 +19,7 @@ import com.taobao.api.response.OpenimUsersDeleteResponse;
 import com.taobao.api.response.OpenimUsersGetResponse;
 import com.taobao.api.response.OpenimUsersUpdateResponse;
 
+
 import java.rmi.server.UID;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,7 @@ import java.util.List;
 /**
  * Created by wang on 2017/4/3.
  */
-public class Openim {
+public class OpenimUserController {
 
     private static String url = OpenimCommon.OpenimUrl;
     private static String appkey = OpenimCommon.Appkey;
@@ -40,14 +43,12 @@ public class Openim {
 //        TaeItemDetailGetResponse response = client.execute(req);
     }
 
-    public static void main(String[] args) throws ApiException {
+    public void main(String[] args) throws ApiException {
         String userId = "wangzhennan,zhangjunhui,addtest1";
-        JsonObject userJson = null;
         getIMUser(userId);
-        addIMUser(userJson);
+//        addIMUser(userJson);
 //        delIMUser();
     }
-
 
 
     public static void getIMUser(String userId) throws ApiException {
@@ -55,30 +56,42 @@ public class Openim {
         OpenimUsersGetRequest req = new OpenimUsersGetRequest();
         req.setUserids(userId);
         OpenimUsersGetResponse rsp = client.execute(req);
+        String r = rsp.getBody();
         System.out.println(rsp.getBody());
-        Gson gson = new Gson();
-        JsonObject userinfos0 = gson.fromJson(rsp.getBody(),JsonObject.class);
-        System.out.println(userinfos0);
-        JsonObject openim_users_get_response = gson.fromJson(userinfos0,JsonObject.class);
-        JsonObject userinfos = gson.fromJson(openim_users_get_response, JsonObject.class);
-        JsonArray userinfos11 = gson.fromJson(userinfos, JsonArray.class);
-//        Response response = new Gson().fromJson(userinfos11, Response.class);
-        UID = gson.fromJson(userinfos11.get(0),String.class);
-        System.out.println("getIMUser"+UID);
+
+        JsonObject json = new JsonParser().parse(r).getAsJsonObject();
+        JsonObject genius_1 = json.get("openim_users_get_response").getAsJsonObject();
+        JsonObject genius_2 = genius_1.get("userinfos").getAsJsonObject();
+        JsonArray genius_3 = genius_2.get("userinfos").getAsJsonArray();
+        for (JsonElement je : genius_3) {
+            AddOpenimUser.addOpenimUser(je);
+
+            System.out.println("je"+je);
+        }
+
+//        AddOpenimUser.addOpenimUser();
+
+
+//        Gson gson = new Gson();
+//        JsonObject userinfos0 = gson.fromJson(rsp.getBody(),JsonObject.class);
+//        System.out.println(userinfos0);
+//        JsonObject openim_users_get_response = gson.fromJson(userinfos0,JsonObject.class);
+//        JsonObject userinfos = gson.fromJson(openim_users_get_response, JsonObject.class);
+//        JsonObject userinfos11 = gson.fromJson(userinfos, JsonObject.class);
+////        Response response = new Gson().fromJson(userinfos11, Response.class);
+//        UID = gson.fromJson(userinfos11.get("userid"),String.class);
+
+//        Student newstudent = gson.fromJson(reponse, Student.class); 
+//        System.out.println("getIMUser" + genius_3);
 
 //        JsonArray userinfos = gson.fromJson(rsp.getBody(),JsonArray.class);
     }
 
-    class Response
-    {
+    class Response {
         @SerializedName("userinfos")
         JsonArray key;
     }
 
-    public static void addIMUser2DB(){
-        Gson gson = new Gson();
-
-    }
 
     public static void delIMUser(String userId) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
@@ -127,7 +140,7 @@ public class Openim {
         obj3.setGender("M");
         req.setUserinfos(list2);
         OpenimUsersAddResponse rsp = client.execute(req);
-        System.out.println("addIMUser"+rsp.getBody());
+        System.out.println("addIMUser" + rsp.getBody());
     }
 
 }

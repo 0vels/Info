@@ -42,6 +42,14 @@ public class User implements Serializable {
     private String photoUrl;    //头像地址
     private boolean used = true;   //是否可用,默认值是true
 
+    public User(){
+
+    }
+    public User(String loginId,String pwd){
+        this.loginId = loginId;
+        this.pwd = pwd;
+    }
+
     public boolean isUsed() {
         return used;
     }

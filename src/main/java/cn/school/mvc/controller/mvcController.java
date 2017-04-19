@@ -1,18 +1,28 @@
 package cn.school.mvc.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-/**
- * Created by Administrator on 2016/9/22.
- */
+
 @Controller
 @RequestMapping("/mvc")
 public class mvcController {
 
-    @RequestMapping(value = "/hello",method = RequestMethod.GET)
-    public String hello(){
-        return "Hello Controller";
+
+    @RequestMapping(value = "/hello",
+            method = RequestMethod.GET,
+            produces = "application/json; encoding=UTF-8;charset=UTF-8")
+    @ResponseBody
+    public Object hello() {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("123","trytry");
+        Gson gson = new Gson();
+        gson.toJson("Hello123个fdgfdgfdg");
+        return jsonObject;
     }
 }

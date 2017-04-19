@@ -8,6 +8,8 @@ import cn.school.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -15,6 +17,23 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    public void checkNull(User user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException {
+        //先检查用户是否存在
+        if (null == user) {
+            //抛出用户为空的自定义异常
+            throw new UserCanNotBeNullException("用户不能为空");
+        }
+        //用户名不能为空检查
+        if (StringUtils.isEmpty(user.getLoginId())) {
+            //抛出用户名为空的自定义异常
+            throw new UserNameCanNotBeNullException("用户名不能为空");
+        }
+        //用户密码不能为空检查
+        if (StringUtils.isEmpty(user.getPwd())) {
+            //抛出用户密码为空的自定义异常
+            throw new UserPwdCanNotBeNullException("用户密码不能为空");
+        }
+    }
     /**
      * 添加用户，一般来说需要检查用户为空、用户名为空、密码为空
      */
@@ -59,4 +78,77 @@ public class UserServiceImpl implements UserService {
         if (result > 0)
             System.out.println("添加用户成功");
     }
+
+
+    /**
+     * 查找用户
+     */
+    public User find(User user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException {
+        final  User user_find ;
+        checkNull(user);
+        //查找用户
+        if (null != userDao.findOneById(user.getLoginId())) {
+            user_find = userDao.findOneById(user.getLoginId());
+        }else {
+            user_find = new User();
+            throw new OtherThingsException("用户不存在");
+        }
+
+        return user_find;
+    }
+
+    /**
+     * 删除
+     * @param user
+     *
+     */
+    @Override
+    public void del(User user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException  {
+        checkNull(user);
+        //用户不存在
+        if (null == userDao.findOneById(user.getLoginId())) {
+            throw new OtherThingsException("用户不存在");
+        }
+        int result = 0; //受影响的行数默认为0
+        try {
+            result = userDao.del(user);
+        } catch (Exception e) {
+            System.out.println("删除用户失败"+e.getMessage());
+            //其他失败异常
+            throw new OtherThingsException("删除用户失败,"+e.getMessage());
+        }
+        if (result > 0)
+            System.out.println("删除用户成功");
+    }
+    /**
+     * 更新
+     * @param user
+     *
+     */
+    @Override
+    public void update(User user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException  {
+        checkNull(user);
+        //用户不存在
+        if (null == userDao.findOneById(user.getLoginId())) {
+            throw new OtherThingsException("用户不存在");
+        }
+        int result = 0; //受影响的行数默认为0
+        try {
+            result = userDao.update(user);
+        } catch (Exception e) {
+            System.out.println("更新用户失败"+e.getMessage());
+            //其他失败异常
+            throw new OtherThingsException("更新用户失败,"+e.getMessage());
+        }
+        if (result > 0)
+            System.out.println("更新用户成功");
+    }
+
+
+    @Override
+    public List<User> findAll() throws  OtherThingsException  {
+
+        return userDao.findAll();
+    }
+
 }
