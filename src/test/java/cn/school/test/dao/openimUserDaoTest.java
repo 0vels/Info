@@ -21,7 +21,7 @@ public class openimUserDaoTest extends BaseTest {
     @Test
     public void testget() {
         OpenimUser user = new OpenimUser();
-        String userId = "wangzhennan,zhangjunhui,addtest1";
+        String userId = "wangzhennan";
         try {
             OpenimUserController openimUserController = new OpenimUserController();
             openimUserController.getIMUser(userId);
