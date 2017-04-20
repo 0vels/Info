@@ -14,12 +14,12 @@
 
     <!--增加语句-->
     <insert id="add" parameterType="OpenimUser">
-    INSERT INTO
-    `openimuser`
-    (`userid`,`age`,`name`,`mobile`,`email`,`icon_url`,`extra`,`password`,`career`)
-    VALUES
-    (#{loginId},#{name},#{age},#{sex},#{duty},#{cellNumber},#{photoUrl},#{pwd},#{used})
-</insert>
+        INSERT INTO
+        `openimuser`
+        (`userid`,`age`,`name`,`mobile`,`email`,`icon_url`,`password`,`career`)
+        VALUES
+        (#{userid},#{age},#{name},#{mobile},#{email},#{icon_url},#{password},#{career})
+    </insert>
 
     <!--(`address`,`age`,`career`,`email`,`extra`,`gender`,`gmt_modified`,`icon_url`,`mobile`,`name`,`nick`,`password`,`mobile`,`mobile`,`mobile`,`mobile`,`mobile`,`mobile`,`mobile`)-->
 
@@ -38,7 +38,8 @@
         UPDATE
         `openimuser`
         SET
-        `userid`=#{userid}, `age`=#{age}, `name`=#{name}, `mobile`=#{mobile}, `email`=#{email}, `icon_url`=#{icon_url}, `extra`=#{extra}, `password`=#{password}, `career`=#{career}
+        `userid`=#{userid}, `age`=#{age}, `name`=#{name}, `mobile`=#{mobile}, `email`=#{email}, `icon_url`=#{icon_url},
+         `password`=#{password}, `career`=#{career}
         WHERE
         `userid`=#{userid};
     </update>

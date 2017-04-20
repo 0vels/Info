@@ -20,7 +20,7 @@ public class openimUserDaoTest extends BaseTest {
 
     @Test
     public void testget() {
-        OpenimUser user = new OpenimUser();
+        OpenimUser openimUser = new OpenimUser();
         String userId = "wangzhennan";
         try {
             OpenimUserController openimUserController = new OpenimUserController();
@@ -30,7 +30,7 @@ public class openimUserDaoTest extends BaseTest {
         }
         int result = 0; //受影响的行数默认为0
         try {
-            result = openimUserDao.add(user);
+            result = openimUserDao.add(openimUser);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("添加用户失败");

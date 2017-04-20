@@ -1,8 +1,6 @@
 package cn.school.mvc.controller;
 
-/**
- * Created by luo on 2017/4/18.
- */
+
 
 
 import cn.school.domain.ResponseObj;

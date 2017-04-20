@@ -48,7 +48,7 @@ public class OpenimUserController {
 
     public void main(String[] args) throws ApiException {
         String userId = "wangzhennan,zhangjunhui,addtest1";
-        getIMUser(userId);
+//        getIMUser(userId);
 //        addIMUser(userJson);
 //        delIMUser();
     }
@@ -67,11 +67,11 @@ public class OpenimUserController {
         JsonObject genius_2 = genius_1.get("userinfos").getAsJsonObject();
         JsonArray genius_3 = genius_2.get("userinfos").getAsJsonArray();
         for (JsonElement je : genius_3) {
-
+            System.out.println("jeeeeee"+je);
             Gson gson = new Gson();
             OpenimUser openimUser = gson.fromJson(je, OpenimUser.class);
             result = openimUserDao.add(openimUser);
-            System.out.println("je"+je);
+
         }
 
 //        AddOpenimUser.addOpenimUser();

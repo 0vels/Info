@@ -9,11 +9,11 @@ import java.util.List;
  * Created by wang on 2017/4/19.
  */
 public interface OpenimUserDao extends Dao<OpenimUser> {
-    int add(OpenimUser user);
+    int add(OpenimUser openimUser);
 
-    int del(OpenimUser user);
+    int del(OpenimUser openimUser);
 
-    int update(OpenimUser user);
+    int update(OpenimUser openimUser);
 
     OpenimUser findOneById(Serializable Id);
 

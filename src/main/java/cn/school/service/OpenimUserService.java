@@ -12,13 +12,13 @@ public interface OpenimUserService extends BaseService<OpenimUser> {
 
     void checkNull(OpenimUser t) throws Exception;
 
-    void add(OpenimUser user)throws Exception;
+    void add(OpenimUser openimUser)throws Exception;
 
-    void del(OpenimUser user)throws Exception;
+    void del(OpenimUser openimUser)throws Exception;
 
-    void update(OpenimUser user)throws Exception;
+    void update(OpenimUser openimUser)throws Exception;
 
-    OpenimUser find(OpenimUser user)throws Exception;
+    OpenimUser find(OpenimUser openimUser)throws Exception;
 
     List<OpenimUser> findAll()throws Exception;
 }
