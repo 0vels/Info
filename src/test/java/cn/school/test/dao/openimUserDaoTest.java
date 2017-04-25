@@ -16,38 +16,47 @@ public class openimUserDaoTest extends BaseTest {
     @Autowired
     private OpenimUserDao openimUserDao;
 
-    @Test
-    public void testget() {
-        OpenimUser openimUser = new OpenimUser();
-        String userId = "wangzhennan";
-        try {
-            OpenimController openimController = new OpenimController();
-            openimController.getIMUser(userId);
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
-        int result = 0; //受影响的行数默认为0
-        try {
-            result = openimUserDao.add(openimUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("添加用户失败");
-        }
-        if (result > 0)
-            System.out.println("添加用户成功");
-    }
+//    @Test
+//    public void testget() {
+//        OpenimUser openimUser = new OpenimUser();
+//        String userId = "wangzhennan";
+//        try {
+//            OpenimController openimController = new OpenimController();
+//            openimController.getIMUser(userId);
+//        } catch (ApiException e) {
+//            e.printStackTrace();
+//        }
+//        int result = 0; //受影响的行数默认为0
+//        try {
+//            result = openimUserDao.add(openimUser);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.println("添加用户失败");
+//        }
+//        if (result > 0)
+//            System.out.println("添加用户成功");
+//    }
 
 
     @Test
     public void testAdd() {
-        OpenimUser user = new OpenimUser();
-        user.setUserid("123455678");
-        user.setNike("添加一个账号");
-        user.setPassword("654321");
+        OpenimUser openimUser = new OpenimUser();
+        openimUser.setUserid("5454");
+        openimUser.setNick("fgdgfd");
+        openimUser.setPassword("654321");
+        openimUser.setExtra("{user:rere;}");
+
+//        String userId = "wangzhennan";
+//        try {
+//            OpenimController openimController = new OpenimController();
+//            openimController.getIMUser(userId);
+//        } catch (ApiException e) {
+//            e.printStackTrace();
+//        }
 
         int result = 0; //受影响的行数默认为0
         try {
-            result = openimUserDao.add(user);
+            result = openimUserDao.add(openimUser);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("添加用户失败");

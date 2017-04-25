@@ -7,15 +7,27 @@ package cn.school.mvc.controller;
 import cn.school.dao.OpenimUserDao;
 import cn.school.domain.OpenimUser;
 import cn.school.domain.ResponseObj;
+import cn.school.openim.OpenimCommon;
 import cn.school.service.OpenimUserService;
 import cn.school.utils.GsonUtils;
 import cn.school.utils.StringUtils;
+import com.google.gson.*;
 import com.taobao.api.ApiException;
+import com.taobao.api.DefaultTaobaoClient;
+import com.taobao.api.TaobaoClient;
+import com.taobao.api.domain.Userinfos;
+import com.taobao.api.request.OpenimUsersAddRequest;
+import com.taobao.api.request.OpenimUsersGetRequest;
+import com.taobao.api.response.OpenimUsersAddResponse;
+import com.taobao.api.response.OpenimUsersGetResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 用户请求相关控制器
@@ -23,10 +35,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller //标明本类是控制器
 @RequestMapping("/rest")  //外层地址
 public class openimUserController {
+
+    private static String url = OpenimCommon.OpenimUrl;
+    private static String appkey = OpenimCommon.Appkey;
+    private static String secret = OpenimCommon.AppSecret;
+
     @Autowired
-    private OpenimUserService openimUserService;    //自动载入Service对象
-    private ResponseObj responseObj;    //返回json数据的实体
     private OpenimUserDao openimUserDao;
+//    private OpenimUserService openimUserService;    //自动载入Service对象
+    private ResponseObj responseObj;    //返回json数据的实体
+
 
 
     @RequestMapping(value = "/add"   //内层地址
@@ -38,24 +56,52 @@ public class openimUserController {
         OpenimUser openimUser = new OpenimUser();
         String userId = "wangzhennan";
         try {
-            OpenimController openimController = new OpenimController();
-            openimController.getIMUser(userId);
+//            OpenimController openimController = new OpenimController();
+//            openimController.getIMUser(userId);
+            getIMUser(userId);
         } catch (ApiException e) {
             e.printStackTrace();
         }
-        int result1 = 0; //受影响的行数默认为0
-        try {
-            result1 = openimUserDao.add(openimUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("添加用户失败");
-        }
-        if (result1 > 0)
-            System.out.println("添加用户成功");
+//        int result1 = 0; //受影响的行数默认为0
+//        try {
+//            result1 = openimUserDao.add(openimUser);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.out.println("添加用户失败");
+//        }
+//        if (result1 > 0)
+//            System.out.println("添加用户成功");
 
 
         return "5435435二恶午饭" ;
     }
+
+
+    int result = 0; //受影响的行数默认为0
+    private void getIMUser(String userId) throws ApiException {
+        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
+        OpenimUsersGetRequest req = new OpenimUsersGetRequest();
+        req.setUserids(userId);
+        OpenimUsersGetResponse rsp = client.execute(req);
+        String r = rsp.getBody();
+        System.out.println(rsp.getBody());
+
+        JsonObject json = new JsonParser().parse(r).getAsJsonObject();
+        JsonObject genius_1 = json.get("openim_users_get_response").getAsJsonObject();
+        JsonObject genius_2 = genius_1.get("userinfos").getAsJsonObject();
+        JsonArray genius_3 = genius_2.get("userinfos").getAsJsonArray();
+        for (JsonElement je : genius_3) {
+            System.out.println("jeeeeee"+je);
+            Gson gson = new Gson();
+            OpenimUser openimUser = gson.fromJson(je, OpenimUser.class);
+            result = openimUserDao.add(openimUser);
+//            System.out.println("jeeeeeeresult"+result);
+        }
+
+    }
+
+
+
     /*
     注册
      */
@@ -93,6 +139,27 @@ public class openimUserController {
 
 
         return result;
+    }
+
+    private void addIMUser(JsonObject userJson) throws ApiException {
+        TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
+        OpenimUsersAddRequest req = new OpenimUsersAddRequest();
+        List<Userinfos> list2 = new ArrayList<Userinfos>();
+        Userinfos obj3 = new Userinfos();
+        list2.add(obj3);
+        obj3.setNick("king");
+        obj3.setIconUrl("http://xxx.com/xxx");
+        obj3.setEmail("uid@taobao.com");
+        obj3.setMobile("18600000000");
+        obj3.setUserid("addtest1");
+        obj3.setPassword("123456");
+        obj3.setExtra("{}");
+        obj3.setName("demo");
+        obj3.setAge(123L);
+        obj3.setGender("M");
+        req.setUserinfos(list2);
+        OpenimUsersAddResponse rsp = client.execute(req);
+        System.out.println("addIMUser" + rsp.getBody());
     }
 
 

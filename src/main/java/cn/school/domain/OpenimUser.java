@@ -15,6 +15,7 @@ public class OpenimUser implements Serializable {
     private String mobile;    //年龄
     private String email;  //手机号
     private String icon_url;  //手机号
+    private String extra;  //手机号
     private String password;    //头像地址
     private String career ;   //是否可用,默认值是true
 
@@ -25,6 +26,14 @@ public class OpenimUser implements Serializable {
     public OpenimUser(String userid,String password){
         this.userid = userid;
         this.password = password;
+    }
+
+    public String getExtra() {
+        return extra;
+    }
+
+    public void setExtra(String extra) {
+        this.extra = extra;
     }
 
     public String getUserid() {
@@ -47,7 +56,11 @@ public class OpenimUser implements Serializable {
         return nick;
     }
 
-    public void setNike(String nick) {
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
         this.nick = nick;
     }
 
@@ -100,7 +113,7 @@ public class OpenimUser implements Serializable {
                 ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +
                 ", icon_url=" + icon_url +
-//                ", extra='" + extra + '\'' +
+                ", extra='" + extra + '\'' +
                 ", password='" + password + '\'' +
                 ", career=" + career +
                 '}';
