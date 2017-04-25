@@ -1,8 +1,6 @@
 package cn.school.mvc.controller;
 
 
-
-
 import cn.school.domain.ResponseObj;
 import cn.school.domain.User;
 import cn.school.exception.OtherThingsException;
@@ -31,8 +29,7 @@ public class userController {
 
     /**
      * 登录接口，因为json数据外层一般都是Object类型，所以返回值必须是Object<br/>
-     *  这里的地址是： 域名/rest/login
-     *
+     * 这里的地址是： 域名/rest/login
      *
      * @return
      */
@@ -40,9 +37,9 @@ public class userController {
             , method = RequestMethod.GET   //限定请求方式
             , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
-    public Object login( String name,String pwd) {
+    public Object login(String name, String pwd) {
         Object result;
-        User user= new User(name,pwd);
+        User user = new User(name, pwd);
         if (null == user) {
             responseObj = new ResponseObj<User>();
             responseObj.setCode(ResponseObj.EMPUTY);

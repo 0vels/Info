@@ -11,7 +11,7 @@ public class OpenimUser implements Serializable {
 
     private String userid;    //名字
     private int age; //登陆ID
-    private String name;    //密码
+    private String nick;    //密码
     private String mobile;    //年龄
     private String email;  //手机号
     private String icon_url;  //手机号
@@ -44,11 +44,11 @@ public class OpenimUser implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return nick;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNike(String nick) {
+        this.nick = nick;
     }
 
     public String getMobile() {
@@ -96,7 +96,7 @@ public class OpenimUser implements Serializable {
         return "User{" +
                 "userid='" + userid + '\'' +
                 ", age='" + age + '\'' +
-                ", name='" + name + '\'' +
+                ", nick='" + nick + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", email='" + email + '\'' +
                 ", icon_url=" + icon_url +

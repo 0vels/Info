@@ -16,13 +16,13 @@ public class mvcController {
 
     @RequestMapping(value = "/hello",
             method = RequestMethod.GET,
-            produces = "application/json; encoding=UTF-8;charset=UTF-8")
+            produces = "application/string; encoding=UTF-8;charset=UTF-8")
     @ResponseBody
-    public Object hello() {
+    public String hello() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("123","trytry");
         Gson gson = new Gson();
         gson.toJson("Hello123个fdgfdgfdg");
-        return jsonObject;
+        return "Hello123个fdgfdgfdg";
     }
 }

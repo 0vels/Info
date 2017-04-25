@@ -1,10 +1,8 @@
 package cn.school.test.dao;
 
 import cn.school.dao.OpenimUserDao;
-import cn.school.dao.UserDao;
 import cn.school.domain.OpenimUser;
-import cn.school.domain.User;
-import cn.school.openim.OpenimUserController;
+import cn.school.mvc.controller.OpenimController;
 import cn.school.test.BaseTest;
 import com.taobao.api.ApiException;
 import org.junit.Test;
@@ -23,14 +21,33 @@ public class openimUserDaoTest extends BaseTest {
         OpenimUser openimUser = new OpenimUser();
         String userId = "wangzhennan";
         try {
-            OpenimUserController openimUserController = new OpenimUserController();
-            openimUserController.getIMUser(userId);
+            OpenimController openimController = new OpenimController();
+            openimController.getIMUser(userId);
         } catch (ApiException e) {
             e.printStackTrace();
         }
         int result = 0; //受影响的行数默认为0
         try {
             result = openimUserDao.add(openimUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("添加用户失败");
+        }
+        if (result > 0)
+            System.out.println("添加用户成功");
+    }
+
+
+    @Test
+    public void testAdd() {
+        OpenimUser user = new OpenimUser();
+        user.setUserid("123455678");
+        user.setNike("添加一个账号");
+        user.setPassword("654321");
+
+        int result = 0; //受影响的行数默认为0
+        try {
+            result = openimUserDao.add(user);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("添加用户失败");

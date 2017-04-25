@@ -1,8 +1,10 @@
-package cn.school.openim;
+package cn.school.mvc.controller;
+
 
 
 import cn.school.dao.OpenimUserDao;
 import cn.school.domain.OpenimUser;
+import cn.school.openim.OpenimCommon;
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
 import com.taobao.api.ApiException;
@@ -20,14 +22,14 @@ import com.taobao.api.response.OpenimUsersUpdateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-import java.rmi.server.UID;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by wang on 2017/4/3.
  */
-public class OpenimUserController {
+public class OpenimController {
 
     @Autowired
     private OpenimUserDao openimUserDao;

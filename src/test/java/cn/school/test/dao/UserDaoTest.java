@@ -35,7 +35,7 @@ public class UserDaoTest extends BaseTest {
     @Test
     public void testFindOneId() throws Exception {
         User user = new User();
-        user.setLoginId("pc147852369");
+        user.setLoginId("123455678");
         User result = null; //受影响的行数默认为0
         try {
             result = userDao.findOneById(user.getLoginId());
@@ -50,7 +50,7 @@ public class UserDaoTest extends BaseTest {
     @Test
     public void testDel() {
         User user = new User();
-        user.setLoginId("pc147852369");
+        user.setLoginId("123455678");
         int result = 0; //受影响的行数默认为0
         try {
             result = userDao.del(user);

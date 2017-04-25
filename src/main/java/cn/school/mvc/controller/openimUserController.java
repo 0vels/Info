@@ -7,14 +7,7 @@ package cn.school.mvc.controller;
 import cn.school.dao.OpenimUserDao;
 import cn.school.domain.OpenimUser;
 import cn.school.domain.ResponseObj;
-import cn.school.domain.User;
-import cn.school.exception.OtherThingsException;
-import cn.school.exception.UserCanNotBeNullException;
-import cn.school.exception.UserNameCanNotBeNullException;
-import cn.school.exception.UserPwdCanNotBeNullException;
-import cn.school.openim.OpenimUserController;
 import cn.school.service.OpenimUserService;
-import cn.school.service.serviceImpl.UserServiceImpl;
 import cn.school.utils.GsonUtils;
 import cn.school.utils.StringUtils;
 import com.taobao.api.ApiException;
@@ -38,15 +31,15 @@ public class openimUserController {
 
     @RequestMapping(value = "/add"   //内层地址
             , method = RequestMethod.GET   //限定请求方式
-            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+            , produces = "application/string; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
-    public Object add() {
+    public String add() {
         Object result = null;
         OpenimUser openimUser = new OpenimUser();
         String userId = "wangzhennan";
         try {
-            OpenimUserController openimUserController = new OpenimUserController();
-            openimUserController.getIMUser(userId);
+            OpenimController openimController = new OpenimController();
+            openimController.getIMUser(userId);
         } catch (ApiException e) {
             e.printStackTrace();
         }
