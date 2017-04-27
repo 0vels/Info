@@ -90,10 +90,24 @@ public class OpenimUserServiceImpl implements OpenimUserService {
 
     }
 
+    /**
+     * 查找用户
+     */
     @Override
-    public OpenimUser find(OpenimUser openimUser) throws Exception {
-        return null;
+    public OpenimUser find(OpenimUser openimUser) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException {
+        final  OpenimUser user_find ;
+        checkNull(openimUser);
+        //查找用户
+        if (null != openimUserDao.findOneById(openimUser.getUserid())) {
+            user_find = openimUserDao.findOneById(openimUser.getUserid());
+        }else {
+            user_find = new OpenimUser();
+            throw new OtherThingsException("用户不存在");
+        }
+
+        return user_find;
     }
+
 
     @Override
     public List<OpenimUser> findAll() throws Exception {

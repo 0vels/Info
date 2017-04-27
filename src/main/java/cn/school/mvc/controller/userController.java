@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * 用户请求相关控制器
  */
-@Controller //标明本类是控制器
-@RequestMapping("/rest")  //外层地址
+//@Controller //标明本类是控制器
+//@RequestMapping("/rest")  //外层地址
 public class userController {
 
     @Autowired
