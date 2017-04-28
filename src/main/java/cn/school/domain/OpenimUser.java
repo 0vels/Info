@@ -12,12 +12,12 @@ public class OpenimUser implements Serializable {
     private String userid;    //名字
     private int age; //登陆ID
     private String nick;    //密码
-    private String mobile;    //年龄
+    private String mobile;    //手机
     private String email;  //手机号
-    private String icon_url;  //手机号
-    private String extra;  //手机号
-    private String password;    //头像地址
-    private String career ;   //是否可用,默认值是true
+    private String icon_url;  //头像
+    private String extra;  //扩展字段
+    private String password;    //密码
+    private String career ;   //职位
 
 
     public OpenimUser(){

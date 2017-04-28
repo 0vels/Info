@@ -39,42 +39,42 @@ public class OpenimUserServiceImpl implements OpenimUserService {
     }
 
     @Override
-    public void add(OpenimUser openimUser) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, UserAireadyExistException, OtherThingsException {
+    public void add(OpenimUser openimUser) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, UserAireadyExistException {
             //先检查用户是否存在
         if (null == openimUser) {
             //抛出用户为空的自定义异常
-            throw new UserCanNotBeNullException("User can not  be Null");
+            throw new UserCanNotBeNullException("信息不能为空");
         }
         //用户名不能为空检查
         if (StringUtils.isEmpty(openimUser.getUserid())) {
             //抛出用户名为空的自定义异常
-            throw new UserNameCanNotBeNullException("User name can not be Null");
+            throw new UserNameCanNotBeNullException("用户名不能为空");
         }
         //用户密码不能为空检查
         if (StringUtils.isEmpty(openimUser.getPassword())) {
             //抛出用户密码为空的自定义异常
-            throw new UserPwdCanNotBeNullException("User name can not be Null");
+            throw new UserPwdCanNotBeNullException("密码不能为空");
         }
         //由于我这个是仓库管理系统，根据业务需求来说，我们的用户基本信息都是不能为空的
         //基本信息包括：姓名、年龄、用户名、密码、性别、手机号，年龄大于18
-        if (StringUtils.isEmpty(openimUser.getCareer())
-                || openimUser.getAge() > 18
-                || StringUtils.isEmpty(openimUser.getMobile())) {
-            //其他综合异常
-            throw new OtherThingsException("Some use's base info can not be null");
-        }
+//        if (StringUtils.isEmpty(openimUser.getCareer())
+//                || openimUser.getAge() > 18
+//                || StringUtils.isEmpty(openimUser.getMobile())) {
+//            //其他综合异常
+//            throw new OtherThingsException("添加失败");
+//        }
         //已经存在相同用户
         if (null != openimUserDao.findOneById(openimUser.getUserid())) {
             //存在相同的用户异常
-            throw new UserAireadyExistException("Register User Failed，Because the  user Aiready exist");
+            throw new UserAireadyExistException("账号已存在");
         }
         int result = 0; //受影响的行数默认为0
         try {
             result = openimUserDao.add(openimUser);
         } catch (Exception e) {
-            System.out.println("添加用户失败,用户已经存在");
+            System.out.println("注册失败");
             //其他用户添加失败异常
-            throw new OtherThingsException(e);
+            throw new UserAireadyExistException("注册失败");
         }
         if (result > 0)
             System.out.println("添加用户成功");
