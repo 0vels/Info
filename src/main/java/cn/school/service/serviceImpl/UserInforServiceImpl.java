@@ -51,7 +51,7 @@ public class UserInforServiceImpl implements UserInforService {
         //用户名不能为空检查
         if (StringUtils.isEmpty(userInfor.getUserid())) {
             //抛出用户名为空的自定义异常
-            throw new UserNameCanNotBeNullException("UserInfor name can not be Null");
+            throw new UserNameCanNotBeNullException("用户名不能为空");
         }
 //        //用户密码不能为空检查
 //        if (StringUtils.isEmpty(userInfor.getPwd())) {
@@ -67,21 +67,21 @@ public class UserInforServiceImpl implements UserInforService {
 //            //其他综合异常
 //            throw new OtherThingsException("Some use's base info can not be null");
 //        }
-//        //已经存在相同用户
-//        if (null != userDao.findOneById(userInfor.getLoginId())) {
-//            //存在相同的用户异常
-//            throw new UserAireadyExistException("Register UserInfor Failed，Because the  userInfor Aiready exist");
-//        }
+        //已经存在相同用户
+        if (null != userInforDao.findOneById(userInfor.getUserid())) {
+            //存在相同的用户异常
+            throw new UserAireadyExistException("用户已存在");
+        }
         int result = 0; //受影响的行数默认为0
         try {
             result = userInforDao.add(userInfor);
         } catch (Exception e) {
-            System.out.println("添加用户失败,用户已经存在");
+            System.out.println("添加用户信息失败");
             //其他用户添加失败异常
             throw new OtherThingsException(e);
         }
         if (result > 0)
-            System.out.println("添加用户成功");
+            System.out.println("添加用户信息成功");
     }
 
 
