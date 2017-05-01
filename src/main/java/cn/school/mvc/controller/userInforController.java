@@ -33,7 +33,7 @@ import java.util.UUID;
  * 用户请求相关控制器
  */
 @Controller //标明本类是控制器
-@RequestMapping("/rest")  //外层地址
+@RequestMapping("/userInfor")  //外层地址
 public class userInforController {
 
     private ResponseObj responseObj;    //返回json数据的实体
@@ -72,6 +72,78 @@ public class userInforController {
 
         responseObj = new ResponseObj<OpenimUser>();
         responseObj.setCode(ResponseObj.FAILED);
+        responseObj.setMsg(msg);
+        result = new GsonUtils().toJson(responseObj);
+        return result;
+    }
+
+    @RequestMapping(value = "/updatetouxiang"   //内层地址
+            , method = RequestMethod.GET   //限定请求方式
+            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+    @ResponseBody
+    public Object updateIcon(String userid, String touxiang) {
+        Object result;
+
+//        Gson gson = new Gson();    //注册和修改个人资料相关
+//        UserInfor userInfor1 = gson.fromJson(userInfor, UserInfor.class);
+        UserInfor userInfor1 = new UserInfor(userid);
+        userInfor1.setTouxiang(touxiang);
+        String msg = "";
+        int result1 = 0; //受影响的行数默认为0
+        try {
+            result1 = userInforDao.updateicon(userInfor1);
+        } catch (Exception e) {
+            System.out.println("添加用户信息失败");
+            //其他用户添加失败异常
+            msg = "添加用户信息失败";
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.FAILED);
+            responseObj.setMsg(msg+e.getMessage());
+            result = new GsonUtils().toJson(responseObj);
+            return result;
+        }
+        if (result1 > 0) {
+            System.out.println("添加用户信息成功");
+            msg = "添加用户信息成功";
+        }
+        responseObj = new ResponseObj<OpenimUser>();
+        responseObj.setCode(ResponseObj.OK);
+        responseObj.setMsg(msg);
+        result = new GsonUtils().toJson(responseObj);
+        return result;
+    }
+
+    @RequestMapping(value = "/updatezuoyouming"   //内层地址
+            , method = RequestMethod.GET   //限定请求方式
+            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+    @ResponseBody
+    public Object updateMotto(String userid, String zuoyouming) {
+        Object result;
+
+//        Gson gson = new Gson();    //注册和修改个人资料相关
+//        UserInfor userInfor1 = gson.fromJson(userInfor, UserInfor.class);
+        UserInfor userInfor1 = new UserInfor(userid);
+        userInfor1.setZuoyouming(zuoyouming);
+        String msg = "";
+        int result1 = 0; //受影响的行数默认为0
+        try {
+            result1 = userInforDao.updatemotto(userInfor1);
+        } catch (Exception e) {
+            System.out.println("添加用户信息失败");
+            //其他用户添加失败异常
+            msg = "添加用户信息失败";
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.FAILED);
+            responseObj.setMsg(msg+e.getMessage());
+            result = new GsonUtils().toJson(responseObj);
+            return result;
+        }
+        if (result1 > 0) {
+            System.out.println("添加用户信息成功");
+            msg = "添加用户信息成功";
+        }
+        responseObj = new ResponseObj<OpenimUser>();
+        responseObj.setCode(ResponseObj.OK);
         responseObj.setMsg(msg);
         result = new GsonUtils().toJson(responseObj);
         return result;

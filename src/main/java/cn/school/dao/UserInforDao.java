@@ -16,6 +16,10 @@ public interface UserInforDao extends Dao<UserInfor>  {
 
     int update(UserInfor userInfor);
 
+    int updateicon(UserInfor userInfor);
+
+    int updatemotto(UserInfor userInfor);
+
     UserInfor findOneById(Serializable Id);
 
     List<UserInfor> findAll();

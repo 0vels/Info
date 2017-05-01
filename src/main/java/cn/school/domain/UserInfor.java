@@ -6,27 +6,34 @@ import java.io.Serializable;
  * Created by wang on 2017/4/30.
  */
 public class UserInfor implements Serializable {
-    private  String userid;
-    private  String mima;
-    private  String  nicheng;
-    private  String  xingming;
-    private  String  xibie;
-    private  String  banji;
-    private  String  xuehao;
-    private  String xingbie;
-    private  String  shengri;
-    private  String  minzu;
-    private  String  jia;
-    private  String  xingqu;
-    private  String  shenfen;
-    private  String  touxiang;
-    private  String  zuoyouming;
+    private String userid;
+    private String mima;
+    private String nicheng;
+    private String xingming;
+    private String xibie;
+    private String banji;
+    private String xuehao;
+    private String xingbie;
+    private String shengri;
+    private String minzu;
+    private String jia;
+    private String xingqu;
+    private String shenfen;
+    private String touxiang;
+    private String zuoyouming;
 
-    public UserInfor(){
+    public UserInfor() {
 
     }
-    public UserInfor(String userid){
+
+    public UserInfor(String userid) {
         this.userid = userid;
+    }
+
+    public UserInfor(String userid,String touxiang,String zuoyouming) {
+        this.userid = userid;
+        this.touxiang = touxiang;
+        this.zuoyouming = zuoyouming;
     }
 
     public String getUserid() {

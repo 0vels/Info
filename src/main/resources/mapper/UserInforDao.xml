@@ -43,4 +43,24 @@
         WHERE
         `userid`=#{userid};
     </update>
+
+    <!-- 更新头像 -->
+    <update id="updateicon" parameterType="UserInfor">
+        UPDATE
+        `userinfor`
+        SET
+        `userid`=#{userid},`touxiang`=#{touxiang}
+        WHERE
+        `userid`=#{userid};
+    </update>
+
+    <!-- 更新座右铭 -->
+    <update id="updatemotto" parameterType="UserInfor">
+        UPDATE
+        `userinfor`
+        SET
+        `userid`=#{userid},`zuoyouming`=#{zuoyouming}
+        WHERE
+        `userid`=#{userid};
+    </update>
 </mapper>

@@ -6,11 +6,13 @@ package cn.school.mvc.controller;
 
 import cn.school.dao.OpenimUserDao;
 import cn.school.dao.UserInforDao;
+import cn.school.domain.IconAndMotto;
 import cn.school.domain.OpenimUser;
 import cn.school.domain.ResponseObj;
 import cn.school.domain.UserInfor;
 import cn.school.exception.*;
 import cn.school.openim.OpenimCommon;
+import cn.school.service.IconAndMottoService;
 import cn.school.service.OpenimUserService;
 import cn.school.service.UserInforService;
 import cn.school.service.serviceImpl.UserInforServiceImpl;
@@ -56,6 +58,8 @@ public class openimUserController {
     private UserInforDao userInforDao;
     @Autowired
     private UserInforService userInforService;
+    @Autowired
+    private IconAndMottoService iconAndMottoService;
 
 /*
 将阿里数据库已存在，但是自己服务器不存在的用户加进数据库
@@ -146,6 +150,7 @@ public class openimUserController {
         try {
             openimUserService.add(openimUser);
             addUserInfor(userid);
+            addIconAndMotto(userid);
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.OK);
             responseObj.setMsg("注册成功");
@@ -195,6 +200,41 @@ public class openimUserController {
 
         try {
             userInforService.add(userInfor);
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.OK);
+            responseObj.setMsg("修改用户信息成功");
+            result = new GsonUtils().toJson(responseObj);
+            return result;
+        } catch (OtherThingsException e) {
+            e.printStackTrace();
+            msg = e.getMessage();
+        } catch (UserAireadyExistException e) {
+            e.printStackTrace();
+            msg = e.getMessage();
+        } catch (UserNameCanNotBeNullException e) {
+            e.printStackTrace();
+            msg = e.getMessage();
+        }catch (Exception e) {
+            e.printStackTrace();
+            msg = e.getMessage();
+        }
+
+        responseObj = new ResponseObj<OpenimUser>();
+        responseObj.setCode(ResponseObj.FAILED);
+        responseObj.setMsg(msg);
+        result = new GsonUtils().toJson(responseObj);
+        return result;
+    }
+
+    private Object addIconAndMotto(String userid) {
+        Object result;
+        Gson gson = new Gson();    //注册和修改个人资料相关
+
+        IconAndMotto iconAndMotto = new IconAndMotto(userid);
+        String msg = "";
+
+        try {
+            iconAndMottoService.add(iconAndMotto);
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.OK);
             responseObj.setMsg("修改用户信息成功");
