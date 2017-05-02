@@ -10,6 +10,14 @@ public class Like implements Serializable {
     private String userid;//发起话题人的id
     private String nickName;//昵称
 
+    public Like( ){
+
+    }
+
+    public Like(String topicid){
+        this.topicid= topicid;
+    }
+
     public String getTopicid() {
         return topicid;
     }

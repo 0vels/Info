@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.school.dao.LikeDao">
+    <!--查找-->
+    <select id="findOneById" resultType="Like" parameterType="String">
+    SELECT
+    *
+    FROM
+    `like`
+    WHERE
+    topicid = #{topicid}
+</select>
+
+    <!--增加语句-->
+    <insert id="add" parameterType="Like">
+        INSERT INTO
+        `like`
+        (`topicid`,`userid`,`nickName`)
+        VALUES
+        (#{topicid},#{userid},#{nickName})
+    </insert>
+
+    <update id="update" parameterType="Like">
+        UPDATE
+        `like`
+        SET
+        `topicid`=#{topicid}, `userid`=#{age}, `nickName`=#{nickName}
+        WHERE
+        `topicid`=#{topicid};
+    </update>
+
+    <!-- 删除 -->
+    <update id="del" parameterType="Like">
+        DELETE FROM
+        `like`
+        WHERE
+        `topicid`=#{topicid};
+    </update>
+
+
+</mapper>
