@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.school.dao.TopicDao">
+    <!--查找-->
+    <select id="findOneById" resultType="Topic" parameterType="String">
+    SELECT
+    *
+    FROM
+    `topic`
+    WHERE
+    topicid = #{topicid}
+</select>
+
+    <!--增加语句-->
+    <insert id="add" parameterType="Topic">
+        INSERT INTO
+        `topic`
+        (`topicid`,`authorid`,`icon`,`nickName`,`create_time`,`content`,`photos`)
+        VALUES
+        (#{topicid},#{authorid},#{icon},#{nickName},#{create_time},#{content},#{photos})
+    </insert>
+
+
+    <!-- 删除 -->
+    <update id="del" parameterType="Topic">
+        DELETE FROM
+        `topic`
+        WHERE
+        `topicid`=#{topicid};
+    </update>
+
+
+</mapper>

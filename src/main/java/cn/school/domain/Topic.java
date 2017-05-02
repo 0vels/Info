@@ -1,9 +1,11 @@
 package cn.school.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by wang on 2017/4/28.
  */
-public class Topic {
+public class Topic implements Serializable {
 
 
     private String topicid;//发起话题人的id
@@ -15,6 +17,14 @@ public class Topic {
     private String photos;//照片
 //    private String thumbPersonsNickname;//点赞人姓名
 //    private String commentContents;//评论
+
+    public Topic(){
+
+    }
+
+    public Topic(String topicid){
+        this.topicid = topicid;
+    }
 
     public Topic(String topicid,String authorid, Object icon, String nickName, String create_time, String content, String photos) {
         this.topicid = topicid;

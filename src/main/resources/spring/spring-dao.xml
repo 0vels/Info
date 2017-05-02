@@ -81,4 +81,15 @@
     <bean id="logFilter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
         <property name="statementExecutableSqlLogEnable" value="false"/>
     </bean>
+
+    <!-- 配置文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 指定文件编码 默认是ISO-8859-1 -->
+
+        <property name="defaultEncoding" value="UTF-8"></property>
+
+        <!-- 指定允许上传文件大小 单位字节 -->
+
+        <property name="maxUploadSize" value="5848220"></property>
+    </bean>
 </beans>
