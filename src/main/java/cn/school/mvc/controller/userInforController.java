@@ -82,40 +82,93 @@ public class userInforController {
     }
 
     @RequestMapping(value = "/updatetouxiang"   //内层地址
-            , method = RequestMethod.GET   //限定请求方式
+            , method = RequestMethod.POST   //限定请求方式
             , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
-    public Object updateIcon(String userid, String touxiang) {
+    public Object updatetouxiang(String userid, MultipartFile file) throws IllegalStateException, IOException {
+        //原始名称
+        String oldFileName = file.getOriginalFilename(); //获取上传文件的原名
+        //存储图片的物理路径
         Object result;
+//        String file_path = "D:/tomcat/webapps";    //本地地址
+        String file_path = "C:/hostadmin/tomcat80/webapps/ROOT/file";    //服务器地址
+//        String file_path = session.getServletContext().getRealPath("webapps/ROOT/");
 
-//        Gson gson = new Gson();    //注册和修改个人资料相关
-//        UserInfor userInfor1 = gson.fromJson(userInfor, UserInfor.class);
-        UserInfor userInfor1 = new UserInfor(userid);
-        userInfor1.setTouxiang(touxiang);
-        String msg = "";
-        int result1 = 0; //受影响的行数默认为0
-        try {
-            result1 = userInforDao.updateicon(userInfor1);
-        } catch (Exception e) {
-            System.out.println("添加用户信息失败");
-            //其他用户添加失败异常
-            msg = "添加用户信息失败";
+        //上传图片
+        if (file != null && oldFileName != null && oldFileName.length() > 0) {
+            //新的图片名称
+            String newFileName = UUID.randomUUID() + oldFileName.substring(oldFileName.lastIndexOf("."));
+            //新图片
+            File newFile = new File(file_path + "/" + newFileName);
+            //将内存中的数据写入磁盘
+            try {
+                file.transferTo(newFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                responseObj = new ResponseObj<OpenimUser>();
+                responseObj.setCode(ResponseObj.FAILED);
+                responseObj.setMsg(ResponseObj.FAILED_STR);
+                responseObj.setData("上传图片失败" + e.getMessage()); //登陆成功后返回用户信息
+                result = new GsonUtils().toJson(responseObj);
+                return result;
+            }
+            String iconurl  ="http://120.25.202.192/file/"+newFileName;
+            UserInfor userInfor1 = new UserInfor(userid);
+            userInfor1.setTouxiang(iconurl);
+            userInforDao.updateicon(userInfor1);
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.OK);
+            responseObj.setMsg(ResponseObj.OK_STR);
+            responseObj.setData("上传图片成功"); //登陆成功后返回用户信息
+            result = new GsonUtils().toJson(responseObj);
+            return result;
+        } else {
+//            Map<String,Object> map=new HashMap<String,Object>();
+//            map.put("error","图片不合法");
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.FAILED);
-            responseObj.setMsg(msg + e.getMessage());
+            responseObj.setMsg(ResponseObj.FAILED_STR);
+            responseObj.setData("图片不合法"); //登陆成功后返回用户信息
             result = new GsonUtils().toJson(responseObj);
             return result;
         }
-        if (result1 > 0) {
-            System.out.println("添加用户信息成功");
-            msg = "添加用户信息成功";
-        }
-        responseObj = new ResponseObj<OpenimUser>();
-        responseObj.setCode(ResponseObj.OK);
-        responseObj.setMsg(msg);
-        result = new GsonUtils().toJson(responseObj);
-        return result;
     }
+
+//    @RequestMapping(value = "/updatetouxiang"   //内层地址
+//            , method = RequestMethod.GET   //限定请求方式
+//            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+//    @ResponseBody
+//    public Object updateIcon(String userid, String touxiang) {
+//        Object result;
+//
+////        Gson gson = new Gson();    //注册和修改个人资料相关
+////        UserInfor userInfor1 = gson.fromJson(userInfor, UserInfor.class);
+//        UserInfor userInfor1 = new UserInfor(userid);
+//        userInfor1.setTouxiang(touxiang);
+//        String msg = "";
+//        int result1 = 0; //受影响的行数默认为0
+//        try {
+//            result1 = userInforDao.updateicon(userInfor1);
+//        } catch (Exception e) {
+//            System.out.println("添加用户信息失败");
+//            //其他用户添加失败异常
+//            msg = "添加用户信息失败";
+//            responseObj = new ResponseObj<OpenimUser>();
+//            responseObj.setCode(ResponseObj.FAILED);
+//            responseObj.setMsg(msg + e.getMessage());
+//            result = new GsonUtils().toJson(responseObj);
+//            return result;
+//        }
+//        if (result1 > 0) {
+//            System.out.println("添加用户信息成功");
+//            msg = "添加用户信息成功";
+//        }
+//        responseObj = new ResponseObj<OpenimUser>();
+//        responseObj.setCode(ResponseObj.OK);
+//        responseObj.setMsg(msg);
+//        result = new GsonUtils().toJson(responseObj);
+//        return result;
+//    }
 
     @RequestMapping(value = "/updatezuoyouming"   //内层地址
             , method = RequestMethod.GET   //限定请求方式
@@ -204,7 +257,6 @@ public class userInforController {
         }
         return result;
     }
-
 
 
 }

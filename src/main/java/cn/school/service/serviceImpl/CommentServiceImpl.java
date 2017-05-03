@@ -3,14 +3,12 @@ package cn.school.service.serviceImpl;
 import cn.school.dao.CommentDao;
 import cn.school.dao.LikeDao;
 import cn.school.dao.TopicDao;
-import cn.school.dao.UserDao;
 import cn.school.domain.Comment;
 import cn.school.domain.Like;
 import cn.school.domain.Topic;
-import cn.school.domain.User;
 import cn.school.exception.*;
+import cn.school.service.CommentService;
 import cn.school.service.TopicService;
-import cn.school.service.UserService;
 import cn.school.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,18 +16,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 
-@Service("topicService")
-public class TopicServiceImpl implements TopicService {
+@Service("commentService")
+public class CommentServiceImpl implements CommentService {
 
     @Autowired
-    private TopicDao userDao;
-    @Autowired
-    private LikeDao likeDao;
-    @Autowired
-    private CommentDao commentDao;
+    private CommentDao userDao;
 
 
-    public void checkNull(Topic user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException {
+
+    public void checkNull(Comment user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException {
         //先检查用户是否存在
         if (null == user) {
             //抛出用户为空的自定义异常
@@ -45,7 +40,7 @@ public class TopicServiceImpl implements TopicService {
     /**
      * 添加用户，一般来说需要检查用户为空、用户名为空、密码为空
      */
-    public void add(Topic user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, UserAireadyExistException, OtherThingsException {
+    public void add(Comment user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, UserAireadyExistException, OtherThingsException {
         //先检查用户是否存在
         if (null == user) {
             //抛出用户为空的自定义异常
@@ -71,8 +66,7 @@ public class TopicServiceImpl implements TopicService {
         int result = 0; //受影响的行数默认为0
         try {
             result = userDao.add(user);
-            likeDao.add(new Like(user.getTopicid()));
-            commentDao.add(new Comment(user.getTopicid(),"i"));
+
         } catch (Exception e) {
             System.out.println("话题发送失败");
             //其他用户添加失败异常
@@ -86,14 +80,14 @@ public class TopicServiceImpl implements TopicService {
     /**
      * 查找用户
      */
-    public Topic find(Topic user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException {
-        final  Topic user_find ;
+    public Comment find(Comment user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException {
+        final  Comment user_find ;
         checkNull(user);
         //查找用户
         if (null != userDao.findOneById(user.getTopicid())) {
             user_find = userDao.findOneById(user.getTopicid());
         }else {
-            user_find = new Topic();
+            user_find = new Comment();
             throw new OtherThingsException("话题不存在");
         }
 
@@ -106,7 +100,7 @@ public class TopicServiceImpl implements TopicService {
      *
      */
     @Override
-    public void del(Topic user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException  {
+    public void del(Comment user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException  {
         checkNull(user);
         //用户不存在
         if (null == userDao.findOneById(user.getTopicid())) {
@@ -129,7 +123,7 @@ public class TopicServiceImpl implements TopicService {
      *
      */
     @Override
-    public void update(Topic user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException  {
+    public void update(Comment user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException  {
         checkNull(user);
         //用户不存在
         if (null == userDao.findOneById(user.getTopicid())) {
@@ -149,7 +143,7 @@ public class TopicServiceImpl implements TopicService {
 
 
     @Override
-    public List<Topic> findAll() throws  OtherThingsException  {
+    public List<Comment> findAll() throws  OtherThingsException  {
 
         return userDao.findAll();
     }

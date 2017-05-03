@@ -12,14 +12,42 @@
     topicid = #{topicid}
 </select>
 
+    <select id="findAll" resultType="Topic" parameterType="String">
+    SELECT
+    *
+    FROM
+    `topic`
+    WHERE
+    topicid = #{topicid}
+    </select>
+
     <!--增加语句-->
     <insert id="add" parameterType="Topic">
         INSERT INTO
         `topic`
-        (`topicid`,`authorid`,`icon`,`nickName`,`create_time`,`content`,`photos`)
+        (`topicid`,`authorid`,`icon`,`nickName`,`create_time`,`content`)
         VALUES
-        (#{topicid},#{authorid},#{icon},#{nickName},#{create_time},#{content},#{photos})
+        (#{topicid},#{authorid},#{icon},#{nickName},#{create_time},#{content})
     </insert>
+
+    <!--&lt;!&ndash; 更新头像 &ndash;&gt;-->
+    <!--<update id="addPhotos" parameterType="Topic">-->
+    <!--UPDATE-->
+    <!--`topic`-->
+    <!--SET-->
+    <!--`topicid`=#{topicid},`photos`=#{photos}-->
+    <!--WHERE-->
+    <!--`topicid`=#{topicid};-->
+    <!--</update>-->
+
+    <!--<update id="addurl" parameterType="Topic">-->
+    <!--UPDATE-->
+    <!--`topic`-->
+    <!--SET-->
+    <!--`topicid`=#{topicid},`photos`=#{photos}-->
+    <!--WHERE-->
+    <!--`topicid`=#{topicid};-->
+    <!--</update>-->
 
 
     <!-- 删除 -->

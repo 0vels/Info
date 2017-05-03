@@ -1,6 +1,6 @@
 package cn.school.dao;
 
-import cn.school.domain.Like;
+import cn.school.domain.Picture;
 import cn.school.domain.Topic;
 
 import java.io.Serializable;
@@ -11,14 +11,10 @@ import java.util.List;
  * <br/>但是,我们这里采用了Mybatis和Druid这两个框架，那么我们可以完全不必理会数据库连接等等的控制，
  * <br/>我们只需要更加专注于业务实现的开发。
  */
-public interface LikeDao extends Dao<Like> {
-    int add(Like user);
+public interface PictureDao extends Dao<Picture> {
+    int add(Picture user);
 
-    int del(Like user);
+    Picture findOneById(Serializable Id);
 
-    int update(Like user);
-
-    Like findOneById(Serializable Id);
-
-    List<Like> findAll(Serializable topicid);
+    List<Picture> findAll(Serializable topicid);
 }

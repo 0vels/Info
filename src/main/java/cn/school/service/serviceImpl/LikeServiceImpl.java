@@ -33,6 +33,7 @@ public class LikeServiceImpl implements LikeService {
         }
 
     }
+
     /**
      * 添加用户，一般来说需要检查用户为空、用户名为空、密码为空
      */
@@ -55,10 +56,10 @@ public class LikeServiceImpl implements LikeService {
 //            throw new OtherThingsException("用户ID不能为空");
 //        }
         //已经存在相同用户
-        if (null != userDao.findOneById(user.getTopicid())) {
-            //存在相同的用户异常
-            throw new UserAireadyExistException("已经赞过了");
-        }
+//        if (null != userDao.findOneById(user.getTopicid())) {
+//            //存在相同的用户异常
+//            throw new UserAireadyExistException("已经赞过了");
+//        }
         int result = 0; //受影响的行数默认为0
         try {
             result = userDao.add(user);
@@ -76,12 +77,12 @@ public class LikeServiceImpl implements LikeService {
      * 查找用户
      */
     public Like find(Like user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException {
-        final  Like user_find ;
+        final Like user_find;
         checkNull(user);
         //查找用户
         if (null != userDao.findOneById(user.getTopicid())) {
             user_find = userDao.findOneById(user.getTopicid());
-        }else {
+        } else {
             user_find = new Like();
             throw new OtherThingsException("没有点赞");
         }
@@ -91,11 +92,11 @@ public class LikeServiceImpl implements LikeService {
 
     /**
      * 删除
-     * @param user
      *
+     * @param user
      */
     @Override
-    public void del(Like user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException  {
+    public void del(Like user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException {
         checkNull(user);
         //用户不存在
         if (null == userDao.findOneById(user.getTopicid())) {
@@ -105,40 +106,41 @@ public class LikeServiceImpl implements LikeService {
         try {
             result = userDao.del(user);
         } catch (Exception e) {
-            System.out.println("取消点赞失败"+e.getMessage());
+            System.out.println("取消点赞失败" + e.getMessage());
             //其他失败异常
-            throw new OtherThingsException("取消点赞失败,"+e.getMessage());
+            throw new OtherThingsException("取消点赞失败," + e.getMessage());
         }
         if (result > 0)
             System.out.println("取消点赞成功");
     }
+
     /**
      * 更新
-     * @param user
      *
+     * @param user
      */
     @Override
-    public void update(Like user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException  {
+    public void update(Like user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException {
         checkNull(user);
         //用户不存在
         if (null == userDao.findOneById(user.getTopicid())) {
-            throw new OtherThingsException("你没有点赞");
+            throw new OtherThingsException("话题为空");
         }
         int result = 0; //受影响的行数默认为0
         try {
             result = userDao.update(user);
         } catch (Exception e) {
-            System.out.println("取消点赞失败"+e.getMessage());
+            System.out.println("点赞失败" + e.getMessage());
             //其他失败异常
-            throw new OtherThingsException("取消点赞失败,"+e.getMessage());
+            throw new OtherThingsException("点赞失败," + e.getMessage());
         }
         if (result > 0)
-            System.out.println("取消点赞成功");
+            System.out.println("点赞成功");
     }
 
 
     @Override
-    public List<Like> findAll() throws  OtherThingsException  {
+    public List<Like> findAll() throws OtherThingsException {
 
         return userDao.findAll();
     }

@@ -2,6 +2,7 @@ package cn.school.dao;
 
 import cn.school.domain.Topic;
 import cn.school.domain.User;
+import cn.school.domain.UserInfor;
 
 import java.io.Serializable;
 import java.util.List;
@@ -17,6 +18,8 @@ public interface TopicDao extends Dao<Topic> {
     int del(Topic user);
 
     int update(Topic user);
+
+    int addPhotos(Topic user);
 
     Topic findOneById(Serializable Id);
 

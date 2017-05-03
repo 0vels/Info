@@ -4,56 +4,126 @@ package cn.school.mvc.controller;
  * Created by wang on 2017/4/21.
  */
 
-import cn.school.dao.LikeDao;
+import cn.school.dao.CommentDao;
+import cn.school.dao.PictureDao;
 import cn.school.dao.TopicDao;
-import cn.school.domain.Like;
-import cn.school.domain.OpenimUser;
-import cn.school.domain.ResponseObj;
-import cn.school.domain.Topic;
+import cn.school.domain.*;
 import cn.school.exception.OtherThingsException;
-import cn.school.service.LikeService;
+import cn.school.service.CommentService;
 import cn.school.service.TopicService;
 import cn.school.utils.GsonUtils;
 import com.google.gson.Gson;
+import com.sun.imageio.plugins.common.ImageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 用户请求相关控制器
  */
 @Controller //标明本类是控制器
-@RequestMapping("/like")  //外层地址
-public class likeController {
+@RequestMapping("/comment")  //外层地址
+public class commentController {
 
     private ResponseObj responseObj;    //返回json数据的实体
 
     @Autowired
-    private LikeDao likeDao;
+    private CommentDao topicDao;
     @Autowired
-    private LikeService likeService;    //自动载入Service对象
+    private CommentService topicService;
 
-    @RequestMapping(value = "/addLike"   //内层地址
+    @RequestMapping(value = "/addComment"   //内层地址
             , method = RequestMethod.GET   //限定请求方式
             , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
-    public Object addLike(String likejson) {
+    public Object addComment(String commentjson) {
         Object result;
         Gson gson = new Gson();
-        Like topic1 = gson.fromJson(likejson, Like.class);
+        Comment topic1 = gson.fromJson(commentjson, Comment.class);
 
         String msg = "";
 
         try {
-            likeService.add(topic1);
+            Comment picture = new Comment(topic1.getTopicid());
+            topicService.add(picture);
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.OK);
-            responseObj.setMsg("点赞成功");
+            responseObj.setMsg("发送评论成功");
+            responseObj.setData(topic1);
+            result = new GsonUtils().toJson(responseObj);
+            return result;
+        } catch (OtherThingsException e) {
+            e.printStackTrace();
+            msg = e.getMessage();
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = e.getMessage();
+        }
+
+        responseObj = new ResponseObj<OpenimUser>();
+        responseObj.setCode(ResponseObj.FAILED);
+        responseObj.setMsg(msg);
+        responseObj.setData(topic1);
+        result = new GsonUtils().toJson(responseObj);
+        return result;
+    }
+
+    @RequestMapping(value = "/getAllComment"   //内层地址
+            , method = RequestMethod.GET   //限定请求方式
+            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+    @ResponseBody
+    public Object getAllComment(String topicid) {
+        Object result;
+        Comment comment = new Comment(topicid);
+        List<Comment> commentList = new ArrayList<>();
+        String msg = "";
+
+        try {
+
+            commentList = topicDao.findAll(topicid);
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.OK);
+            responseObj.setMsg("获取评论成功");
+            responseObj.setData(commentList);
+            result = new GsonUtils().toJson(responseObj);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            msg = e.getMessage();
+        }
+
+        responseObj = new ResponseObj<OpenimUser>();
+        responseObj.setCode(ResponseObj.FAILED);
+        responseObj.setMsg(msg);
+        responseObj.setData(commentList);
+        result = new GsonUtils().toJson(responseObj);
+        return result;
+    }
+
+    @RequestMapping(value = "/delComment"   //内层地址
+            , method = RequestMethod.GET   //限定请求方式
+            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+    @ResponseBody
+    public Object delComment(String commentid) {
+        Object result;
+        Comment topic1 = new Comment(commentid);
+
+        String msg = "";
+
+        try {
+            topicService.del(topic1);
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.OK);
+            responseObj.setMsg("删除评论成功");
             result = new GsonUtils().toJson(responseObj);
             return result;
         } catch (OtherThingsException e) {
@@ -71,66 +141,5 @@ public class likeController {
         return result;
     }
 
-    @RequestMapping(value = "/removeLike"   //内层地址
-            , method = RequestMethod.GET   //限定请求方式
-            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
-    @ResponseBody
-    public Object removeLike(String topicid) {
-        Object result;
-        Like topic1 = new Like(topicid);
 
-        String msg = "";
-
-        try {
-            likeService.del(topic1);
-            responseObj = new ResponseObj<OpenimUser>();
-            responseObj.setCode(ResponseObj.OK);
-            responseObj.setMsg("取消点赞成功");
-            result = new GsonUtils().toJson(responseObj);
-            return result;
-        } catch (OtherThingsException e) {
-            e.printStackTrace();
-            msg = e.getMessage();
-        } catch (Exception e) {
-            e.printStackTrace();
-            msg = e.getMessage();
-        }
-
-        responseObj = new ResponseObj<OpenimUser>();
-        responseObj.setCode(ResponseObj.FAILED);
-        responseObj.setMsg(msg);
-        result = new GsonUtils().toJson(responseObj);
-        return result;
-    }
-
-    @RequestMapping(value = "/getLike"   //内层地址
-            , method = RequestMethod.GET   //限定请求方式
-            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
-    @ResponseBody
-    public Object getLike(String topicid) {
-        Object result;
-//        Like topic1 = new Like(topicid);
-        List<Like> likeList = new ArrayList<>();
-        String msg = "";
-
-        try {
-            likeList = likeDao.findAll(topicid);
-            responseObj = new ResponseObj<OpenimUser>();
-            responseObj.setCode(ResponseObj.OK);
-            responseObj.setMsg("获取点赞成功");
-            responseObj.setData(likeList);
-            result = new GsonUtils().toJson(responseObj);
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            msg = e.getMessage();
-        }
-
-        responseObj = new ResponseObj<OpenimUser>();
-        responseObj.setCode(ResponseObj.FAILED);
-        responseObj.setMsg(msg);
-        responseObj.setData(likeList);
-        result = new GsonUtils().toJson(responseObj);
-        return result;
-    }
 }

@@ -14,12 +14,12 @@ public class Topic implements Serializable {
     private String nickName;//昵称
     private String create_time;//发起时间
     private String content;//内容
-    private String photos;//照片
+//
 //    private String thumbPersonsNickname;//点赞人姓名
 //    private String commentContents;//评论
 
     public Topic(){
-
+//        private String photos;//照片
     }
 
     public Topic(String topicid){
@@ -33,7 +33,7 @@ public class Topic implements Serializable {
         this.nickName = nickName;
         this.create_time = create_time;
         this.content = content;
-        this.photos = photos;
+//        this.photos = photos;
 //        this.thumbPersonsNickname = thumbPersonsNickname;
 //        this.commentContents = commentContents;
     }
@@ -87,13 +87,13 @@ public class Topic implements Serializable {
         this.content = content;
     }
 
-    public String getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(String photos) {
-        this.photos = photos;
-    }
+//    public String getPhotos() {
+//        return photos;
+//    }
+//
+//    public void setPhotos(String photos) {
+//        this.photos = photos;
+//    }
 
 //    public String getThumbPersonsNickname() {
 //        if (thumbPersonsNickname==null){
@@ -126,7 +126,7 @@ public class Topic implements Serializable {
                 ", nickName='" + nickName + '\'' +
                 ", create_time='" + create_time + '\'' +
                 ", content='" + content + '\'' +
-                ", photos=" + photos +
+//                ", photos=" + photos +
 //                ", thumbPersonsNickname=" + thumbPersonsNickname +
 //                ", commentPersons=" + commentContents +
                 '}';

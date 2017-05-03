@@ -12,6 +12,15 @@
     topicid = #{topicid}
 </select>
 
+    <select id="findAll" resultType="Like" parameterType="String">
+        SELECT
+        *
+        FROM
+        `like`
+        WHERE
+        topicid = #{topicid}
+    </select>
+
     <!--增加语句-->
     <insert id="add" parameterType="Like">
         INSERT INTO
@@ -25,7 +34,7 @@
         UPDATE
         `like`
         SET
-        `topicid`=#{topicid}, `userid`=#{age}, `nickName`=#{nickName}
+        `topicid`=#{topicid}, `userid`=#{userid}, `nickName`=#{nickName}
         WHERE
         `topicid`=#{topicid};
     </update>
