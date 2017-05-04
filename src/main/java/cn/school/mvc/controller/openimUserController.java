@@ -342,29 +342,31 @@ public class openimUserController {
 
     /**
      * 修改资料接口，因为json数据外层一般都是Object类型，所以返回值必须是Object<br/>
-     * 这里的地址是： 域名/rest/modifymyinfor
+     * 这里的地址是： 域名/rest/changePassword
      *
      * @return
      */
-    @RequestMapping(value = "/modifymyinfor"    //内层地址
+    @RequestMapping(value = "/changePassword"    //内层地址
             , method = RequestMethod.GET   //限定请求方式
             , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
-    public Object ModifyMyInfor(JsonObject userJson) {
+    public Object changePassword(String userid, String oldPassword,String newPassword) {
         Object result;
         Gson gson = new Gson();    //注册和修改个人资料相关
-        OpenimUser openimUser = gson.fromJson(userJson, OpenimUser.class);
-        String userid = openimUser.getUserid();
-        String password = openimUser.getPassword();
-//        openimUser = new OpenimUser(userid, password);
+        OpenimUser openimUser = new OpenimUser(userid,oldPassword);
+        OpenimUser openimUser1 = new OpenimUser(userid,newPassword);
+
+//        String userid = openimUser.getUserid();
+//        String password = openimUser.getPassword();
+
         if (null == openimUser) {
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.EMPUTY);
-            responseObj.setMsg("登录信息不能为空");
+            responseObj.setMsg("用户信息不能为空");
             result = new GsonUtils().toJson(responseObj);   //通过gson把java bean转换为json
             return result; //返回json
         }
-        if (StringUtils.isEmpty(openimUser.getUserid()) || StringUtils.isEmpty(openimUser.getPassword())) {
+        if (StringUtils.isEmpty(openimUser.getUserid()) || StringUtils.isEmpty(openimUser.getPassword())||StringUtils.isEmpty(newPassword)) {
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.FAILED);
             responseObj.setMsg("用户名或密码不能为空");
@@ -373,9 +375,20 @@ public class openimUserController {
         }
         //查找用户
         OpenimUser user1 = null;
-        String msg;
+        String msg = "";
+
+
         try {
             user1 = openimUserService.find(openimUser);
+            updateIMUser(userid, newPassword);
+            openimUserService.update(openimUser1);
+            userInforDao.changePassword(new UserInfor(userid, newPassword));
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.OK);    //登录成功，状态为1
+            responseObj.setMsg(ResponseObj.OK_STR);
+//                responseObj.setData(user1); //登陆成功后返回用户信息
+            result = new GsonUtils().toJson(responseObj);
+            return result;
         } catch (UserCanNotBeNullException e) {
             e.printStackTrace();
             msg = e.getMessage();
@@ -388,48 +401,49 @@ public class openimUserController {
         } catch (OtherThingsException e) {
             e.printStackTrace();
             msg = e.getMessage();
+        } catch (ApiException e) {
+            e.printStackTrace();
+            msg = e.getMessage();
         } catch (Exception e) {
             e.printStackTrace();
             msg = e.getMessage();
         }
-        if (null == user1) {
-            responseObj = new ResponseObj<OpenimUser>();
-            responseObj.setCode(ResponseObj.EMPUTY);
-            responseObj.setMsg("未找到该用户");
-            result = new GsonUtils().toJson(responseObj);
-        } else {
-            if (openimUser.getPassword().equals(user1.getPassword())) {
-                responseObj = new ResponseObj<OpenimUser>();
-                responseObj.setCode(ResponseObj.OK);    //登录成功，状态为1
-                responseObj.setMsg(ResponseObj.OK_STR);
-                responseObj.setData(user1); //登陆成功后返回用户信息
-                result = new GsonUtils().toJson(responseObj);
-            } else {
-                responseObj = new ResponseObj<OpenimUser>();
-                responseObj.setCode(ResponseObj.FAILED);
-                responseObj.setMsg("用户密码错误");
-                result = new GsonUtils().toJson(responseObj);
-            }
-        }
+
+        responseObj = new ResponseObj<OpenimUser>();
+        responseObj.setCode(ResponseObj.FAILED);
+        responseObj.setData(msg);
+        result = new GsonUtils().toJson(responseObj);
         return result;
+//        if (null == user1) {
+//            responseObj = new ResponseObj<OpenimUser>();
+//            responseObj.setCode(ResponseObj.EMPUTY);
+//            responseObj.setMsg("未找到该用户");
+//            result = new GsonUtils().toJson(responseObj);
+//        } else {
+//            if (openimUser.getPassword().equals(user1.getPassword())) {
+//                responseObj = new ResponseObj<OpenimUser>();
+//                responseObj.setCode(ResponseObj.OK);    //登录成功，状态为1
+//                responseObj.setMsg(ResponseObj.OK_STR);
+////                responseObj.setData(user1); //登陆成功后返回用户信息
+//                result = new GsonUtils().toJson(responseObj);
+//            } else {
+//                responseObj = new ResponseObj<OpenimUser>();
+//                responseObj.setCode(ResponseObj.FAILED);
+//                responseObj.setData(msg);
+//                result = new GsonUtils().toJson(responseObj);
+//            }
+//        }
+//        return result;
     }
 
-    public static void updateIMUser(JsonObject userJson) throws ApiException {
+    public static void updateIMUser(String userid,String newPassword) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(url, appkey, secret);
         OpenimUsersUpdateRequest req = new OpenimUsersUpdateRequest();
         List<Userinfos> list2 = new ArrayList<Userinfos>();
         Userinfos obj3 = new Userinfos();
         list2.add(obj3);
-        obj3.setNick("king");
-        obj3.setIconUrl("http://xxx.com/xxx");
-        obj3.setEmail("uid@taobao.com");
-        obj3.setMobile("18600000000");
-        obj3.setUserid("addtest1");
-        obj3.setPassword("xxxxxx");
-        obj3.setExtra("{}");
-        obj3.setName("demo");
-        obj3.setAge(123L);
-        obj3.setGender("M");
+        obj3.setUserid(userid);
+        obj3.setPassword(newPassword);
         req.setUserinfos(list2);
         OpenimUsersUpdateResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());

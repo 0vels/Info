@@ -206,6 +206,42 @@ public class userInforController {
         return result;
     }
 
+//    @RequestMapping(value = "/changePassword"   //内层地址
+//            , method = RequestMethod.GET   //限定请求方式
+//            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+//    @ResponseBody
+//    public Object changePassword(String userid, String mima) {
+//        Object result;
+//
+////        Gson gson = new Gson();    //注册和修改个人资料相关
+////        UserInfor userInfor1 = gson.fromJson(userInfor, UserInfor.class);
+//        UserInfor userInfor1 = new UserInfor(userid);
+//        userInfor1.setMima(mima);
+//        String msg = "";
+//        int result1 = 0; //受影响的行数默认为0
+//        try {
+//            result1 = userInforDao.changePassword(userInfor1);
+//        } catch (Exception e) {
+//            System.out.println("修改密码失败");
+//            //其他用户添加失败异常
+//            msg = "修改密码失败";
+//            responseObj = new ResponseObj<OpenimUser>();
+//            responseObj.setCode(ResponseObj.FAILED);
+//            responseObj.setMsg(msg + e.getMessage());
+//            result = new GsonUtils().toJson(responseObj);
+//            return result;
+//        }
+//        if (result1 > 0) {
+//            System.out.println("修改密码成功");
+//            msg = "修改密码成功";
+//        }
+//        responseObj = new ResponseObj<OpenimUser>();
+//        responseObj.setCode(ResponseObj.OK);
+//        responseObj.setMsg(msg);
+//        result = new GsonUtils().toJson(responseObj);
+//        return result;
+//    }
+
     @RequestMapping(value = "/getUserInfor"   //内层地址
             , method = RequestMethod.GET   //限定请求方式
             , produces = "application/json; charset=utf-8") //设置返回值是json数据类型

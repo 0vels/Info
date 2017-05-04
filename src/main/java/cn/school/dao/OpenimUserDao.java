@@ -15,6 +15,8 @@ public interface OpenimUserDao extends Dao<OpenimUser> {
 
     int update(OpenimUser openimUser);
 
+    int changePassword(String userid,String newPassword);
+
     OpenimUser findOneById(Serializable Id);
 
     List<OpenimUser> findAll();

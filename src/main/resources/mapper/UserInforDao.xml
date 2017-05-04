@@ -63,4 +63,14 @@
         WHERE
         `userid`=#{userid};
     </update>
+
+    <!-- 改密码 -->
+    <update id="changePassword" parameterType="UserInfor">
+        UPDATE
+        `userinfor`
+        SET
+        `userid`=#{userid},`mima`=#{mima}
+        WHERE
+        `userid`=#{userid};
+    </update>
 </mapper>

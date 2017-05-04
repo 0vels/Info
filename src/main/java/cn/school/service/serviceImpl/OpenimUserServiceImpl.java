@@ -87,7 +87,40 @@ public class OpenimUserServiceImpl implements OpenimUserService {
 
     @Override
     public void update(OpenimUser openimUser) throws Exception {
+        //先检查用户是否存在
+        if (null == openimUser) {
+            //抛出用户为空的自定义异常
+            throw new UserCanNotBeNullException("用户不存在");
+        }
+        //用户名不能为空检查
+        if (StringUtils.isEmpty(openimUser.getUserid())) {
+            //抛出用户名为空的自定义异常
+            throw new UserNameCanNotBeNullException("用户名不能为空");
+        }
+        //用户密码不能为空检查
+        if (StringUtils.isEmpty(openimUser.getPassword())) {
+            //抛出用户密码为空的自定义异常
+            throw new UserPwdCanNotBeNullException("密码不能为空");
+        }
+        //由于我这个是仓库管理系统，根据业务需求来说，我们的用户基本信息都是不能为空的
+        //基本信息包括：姓名、年龄、用户名、密码、性别、手机号，年龄大于18
+//        if (StringUtils.isEmpty(openimUser.getCareer())
+//                || openimUser.getAge() > 18
+//                || StringUtils.isEmpty(openimUser.getMobile())) {
+//            //其他综合异常
+//            throw new OtherThingsException("添加失败");
+//        }
 
+        int result = 0; //受影响的行数默认为0
+        try {
+            result = openimUserDao.update(openimUser);
+        } catch (Exception e) {
+            System.out.println("修改密码失败");
+            //其他用户添加失败异常
+            throw new UserAireadyExistException("修改密码失败");
+        }
+        if (result > 0)
+            System.out.println("修改密码成功");
     }
 
     /**

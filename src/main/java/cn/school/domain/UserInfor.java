@@ -30,10 +30,9 @@ public class UserInfor implements Serializable {
         this.userid = userid;
     }
 
-    public UserInfor(String userid,String touxiang,String zuoyouming) {
+    public UserInfor(String userid,String mima) {
         this.userid = userid;
-        this.touxiang = touxiang;
-        this.zuoyouming = zuoyouming;
+        this.mima = mima;
     }
 
     public String getUserid() {

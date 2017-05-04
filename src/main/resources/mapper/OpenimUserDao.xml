@@ -43,4 +43,15 @@
         WHERE
         `userid`=#{userid};
     </update>
+
+    <!-- 修改密码 -->
+    <update id="changePassword" parameterType="String">
+        UPDATE
+        `openimuser`
+        SET
+        `userid`=#{userid},`password`=#{password}
+        WHERE
+        `userid`=#{userid};
+    </update>
+
 </mapper>

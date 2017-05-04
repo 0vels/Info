@@ -20,6 +20,8 @@ public interface UserInforDao extends Dao<UserInfor>  {
 
     int updatemotto(UserInfor userInfor);
 
+    int changePassword(UserInfor userInfor);
+
     UserInfor findOneById(Serializable Id);
 
     List<UserInfor> findAll();
