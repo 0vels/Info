@@ -3,21 +3,16 @@ package cn.school.mvc.controller;
 
 
 import cn.school.dao.OpenimUserDao;
-import cn.school.domain.OpenimUser;
-import cn.school.openim.OpenimCommon;
+import cn.school.common.OpenimCommon;
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.Userinfos;
-import com.taobao.api.request.OpenimUsersAddRequest;
 import com.taobao.api.request.OpenimUsersDeleteRequest;
-import com.taobao.api.request.OpenimUsersGetRequest;
 import com.taobao.api.request.OpenimUsersUpdateRequest;
-import com.taobao.api.response.OpenimUsersAddResponse;
 import com.taobao.api.response.OpenimUsersDeleteResponse;
-import com.taobao.api.response.OpenimUsersGetResponse;
 import com.taobao.api.response.OpenimUsersUpdateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -6,13 +6,11 @@ package cn.school.mvc.controller;
 
 import cn.school.dao.LikeDao;
 import cn.school.dao.TopicDao;
-import cn.school.domain.Like;
-import cn.school.domain.OpenimUser;
-import cn.school.domain.ResponseObj;
-import cn.school.domain.Topic;
+import cn.school.domain.*;
 import cn.school.exception.OtherThingsException;
 import cn.school.service.LikeService;
 import cn.school.service.TopicService;
+import cn.school.service.UserInforService;
 import cn.school.utils.GsonUtils;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +34,8 @@ public class likeController {
     @Autowired
     private LikeDao likeDao;
     @Autowired
+    private UserInforService userInforService;
+    @Autowired
     private LikeService likeService;    //自动载入Service对象
 
     @RequestMapping(value = "/addLike"   //内层地址
@@ -46,10 +46,21 @@ public class likeController {
         Object result;
         Gson gson = new Gson();
         Like topic1 = gson.fromJson(likejson, Like.class);
-
+        String userid = topic1.getUserid();
+        String topicid=topic1.getTopicid();
         String msg = "";
 
         try {
+            Like existedLike = likeDao.findOneByIdAndTopicid(new Like(topic1.getTopicid(),topic1.getUserid()));
+            if (existedLike!=null){
+                responseObj = new ResponseObj<OpenimUser>();
+                responseObj.setCode(ResponseObj.FAILED);
+                responseObj.setMsg("你已经点过赞了");
+                result = new GsonUtils().toJson(responseObj);
+                return result;
+            }
+            UserInfor userInfor = userInforService.find(new UserInfor(userid));
+            topic1.setNickName(userInfor.getNicheng());
             likeService.add(topic1);
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.OK);
@@ -75,9 +86,9 @@ public class likeController {
             , method = RequestMethod.GET   //限定请求方式
             , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
-    public Object removeLike(String topicid) {
+    public Object removeLike(String topicid,String userid) {
         Object result;
-        Like topic1 = new Like(topicid);
+        Like topic1 = new Like(topicid,userid);
 
         String msg = "";
 

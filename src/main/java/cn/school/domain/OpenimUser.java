@@ -23,6 +23,11 @@ public class OpenimUser implements Serializable {
     public OpenimUser(){
 
     }
+
+    public OpenimUser(String userid){
+        this.userid = userid;
+    }
+
     public OpenimUser(String userid,String password){
         this.userid = userid;
         this.password = password;

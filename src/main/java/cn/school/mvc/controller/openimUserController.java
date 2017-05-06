@@ -11,11 +11,10 @@ import cn.school.domain.OpenimUser;
 import cn.school.domain.ResponseObj;
 import cn.school.domain.UserInfor;
 import cn.school.exception.*;
-import cn.school.openim.OpenimCommon;
+import cn.school.common.OpenimCommon;
 import cn.school.service.IconAndMottoService;
 import cn.school.service.OpenimUserService;
 import cn.school.service.UserInforService;
-import cn.school.service.serviceImpl.UserInforServiceImpl;
 import cn.school.utils.GsonUtils;
 import cn.school.utils.StringUtils;
 import com.google.gson.*;
@@ -68,10 +67,10 @@ public class openimUserController {
             , method = RequestMethod.GET   //限定请求方式
             , produces = "application/string; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
-    public String add() {
+    public String add(String userId) {
         Object result = null;
         OpenimUser openimUser = new OpenimUser();
-        String userId = "wangzhennan";
+//        String userId = "wangzhennan";
         try {
 //            OpenimController openimController = new OpenimController();
 //            openimController.getIMUser(userId);
@@ -129,20 +128,7 @@ public class openimUserController {
     public Object register(String userid, String password) throws ApiException {
         Object result = null;
         OpenimUser openimUser = new OpenimUser(userid, password);
-//        if (null == openimUser) {
-//            responseObj = new ResponseObj<OpenimUser>();
-//            responseObj.setCode(ResponseObj.EMPUTY);
-//            responseObj.setMsg("注册信息不能为空");
-//            result = new GsonUtils().toJson(responseObj);   //通过gson把java bean转换为json
-//            return result; //返回json
-//        }
-//        if (StringUtils.isEmpty(openimUser.getUserid()) || StringUtils.isEmpty(openimUser.getPassword())) {
-//            responseObj = new ResponseObj<OpenimUser>();
-//            responseObj.setCode(ResponseObj.FAILED);
-//            responseObj.setMsg("用户名或密码不能为空");
-//            result = new GsonUtils().toJson(responseObj);
-//            return result;
-//        }
+
         addIMUser(userid, password);
 
         int result1 = 0; //受影响的行数默认为0
@@ -196,6 +182,7 @@ public class openimUserController {
         Gson gson = new Gson();    //注册和修改个人资料相关
 
         UserInfor userInfor = new UserInfor(userid);
+        userInfor.setShenfen("学生");
         String msg = "";
 
         try {
@@ -305,8 +292,14 @@ public class openimUserController {
         }
         //查找用户
         OpenimUser user1 = null;
+//        OpenimUser mimaUser = new OpenimUser();
         try {
             user1 = openimUserService.find(openimUser);
+            OpenimUser mimaUser = openimUserService.find(new OpenimUser(userid));
+
+            UserInfor userInfor = new UserInfor(userid);
+            userInfor.setMima(mimaUser.getPassword());
+            userInforService.update(userInfor);
         } catch (UserCanNotBeNullException e) {
             e.printStackTrace();
         } catch (UserNameCanNotBeNullException e) {

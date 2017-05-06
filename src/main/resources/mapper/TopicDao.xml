@@ -17,8 +17,6 @@
     *
     FROM
     `topic`
-    WHERE
-    topicid = #{topicid}
     </select>
 
     <!--增加语句-->
@@ -30,24 +28,6 @@
         (#{topicid},#{authorid},#{icon},#{nickName},#{create_time},#{content})
     </insert>
 
-    <!--&lt;!&ndash; 更新头像 &ndash;&gt;-->
-    <!--<update id="addPhotos" parameterType="Topic">-->
-    <!--UPDATE-->
-    <!--`topic`-->
-    <!--SET-->
-    <!--`topicid`=#{topicid},`photos`=#{photos}-->
-    <!--WHERE-->
-    <!--`topicid`=#{topicid};-->
-    <!--</update>-->
-
-    <!--<update id="addurl" parameterType="Topic">-->
-    <!--UPDATE-->
-    <!--`topic`-->
-    <!--SET-->
-    <!--`topicid`=#{topicid},`photos`=#{photos}-->
-    <!--WHERE-->
-    <!--`topicid`=#{topicid};-->
-    <!--</update>-->
 
 
     <!-- 删除 -->

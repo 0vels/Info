@@ -53,8 +53,8 @@ public class commentController {
         String msg = "";
 
         try {
-            Comment picture = new Comment(topic1.getTopicid());
-            topicService.add(picture);
+//            Comment picture = new Comment(topic1.getTopicid());
+            topicService.add(topic1);
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.OK);
             responseObj.setMsg("发送评论成功");

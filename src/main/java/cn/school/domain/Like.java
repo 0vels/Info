@@ -11,11 +11,15 @@ public class Like implements Serializable {
     private String nickName;//昵称
 
     public Like( ){
-
     }
 
     public Like(String topicid){
         this.topicid= topicid;
+    }
+
+    public Like(String topicid,String userid){
+        this.topicid= topicid;
+        this.userid= userid;
     }
 
     public String getTopicid() {
@@ -48,8 +52,6 @@ public class Like implements Serializable {
                 "topicid='" + topicid + '\'' +
                 ", userid='" + userid + '\'' +
                 ", nickName='" + nickName + '\'' +
-//                ", thumbPersonsNickname=" + thumbPersonsNickname +
-//                ", commentPersons=" + commentContents +
                 '}';
     }
 }

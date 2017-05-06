@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Topic implements Serializable {
 
 
-    private String topicid;//发起话题人的id
+    private String topicid;//话题的id
     private String authorid;//发起话题人的id
     private Object icon;//头像
     private String nickName;//昵称

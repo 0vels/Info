@@ -12,6 +12,16 @@
     topicid = #{topicid}
 </select>
 
+    <!--通过id和topicid找-->
+    <select id="findOneByIdAndTopicid" resultType="Like" parameterType="Like">
+        SELECT
+        *
+        FROM
+        `like`
+        WHERE
+        topicid = #{topicid} AND userid = #{userid}
+    </select>
+
     <select id="findAll" resultType="Like" parameterType="String">
         SELECT
         *
@@ -44,7 +54,7 @@
         DELETE FROM
         `like`
         WHERE
-        `topicid`=#{topicid};
+        `topicid`=#{topicid} AND `userid`=#{usreid};
     </update>
 
 

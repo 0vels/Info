@@ -1,4 +1,4 @@
-package cn.school.openim;
+package cn.school.common;
 
 /**
  * Created by wang on 2017/4/3.
