@@ -26,7 +26,7 @@ public class Topic implements Serializable {
         this.topicid = topicid;
     }
 
-    public Topic(String topicid,String authorid, Object icon, String nickName, String create_time, String content, String photos) {
+    public Topic(String topicid,String authorid, Object icon, String nickName, String create_time, String content) {
         this.topicid = topicid;
         this.authorid = authorid;
         this.icon = icon;
@@ -126,9 +126,6 @@ public class Topic implements Serializable {
                 ", nickName='" + nickName + '\'' +
                 ", create_time='" + create_time + '\'' +
                 ", content='" + content + '\'' +
-//                ", photos=" + photos +
-//                ", thumbPersonsNickname=" + thumbPersonsNickname +
-//                ", commentPersons=" + commentContents +
                 '}';
     }
 

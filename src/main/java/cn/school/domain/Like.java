@@ -48,7 +48,7 @@ public class Like implements Serializable {
 
     @Override
     public String toString() {
-        return "TopicEntity{" +
+        return "LikeEntity{" +
                 "topicid='" + topicid + '\'' +
                 ", userid='" + userid + '\'' +
                 ", nickName='" + nickName + '\'' +

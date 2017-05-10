@@ -54,7 +54,7 @@
         DELETE FROM
         `like`
         WHERE
-        `topicid`=#{topicid} AND `userid`=#{usreid};
+        `topicid`=#{topicid} AND `userid`=#{userid};
     </update>
 
 

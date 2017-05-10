@@ -11,6 +11,10 @@ public class Queren implements Serializable {
     private String userid;//
     private String queren;
 
+    public Queren(String userid){
+        this.userid=userid;
+    }
+
     public Queren(String userid, long id){
         this.userid=userid;
         this.TID=id;

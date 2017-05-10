@@ -9,7 +9,7 @@
     FROM
     `topic`
     WHERE
-    topicid = #{topicid}
+    topicid = #{topicid};
 </select>
 
     <select id="findAll" resultType="Topic" parameterType="String">
@@ -17,6 +17,7 @@
     *
     FROM
     `topic`
+    ORDER BY id DESC
     </select>
 
     <!--增加语句-->
@@ -27,7 +28,6 @@
         VALUES
         (#{topicid},#{authorid},#{icon},#{nickName},#{create_time},#{content})
     </insert>
-
 
 
     <!-- 删除 -->

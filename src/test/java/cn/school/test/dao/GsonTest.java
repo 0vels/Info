@@ -17,8 +17,11 @@ import java.util.List;
 
 public class GsonTest extends BaseTest {
 
-@Autowired TopicDao topicDao;
-    @Autowired PictureDao pictureDao;
+    @Autowired
+    TopicDao topicDao;
+    @Autowired
+    PictureDao pictureDao;
+
     @Test
     public void testAdd() {
 //        User user = new User();
@@ -27,18 +30,17 @@ public class GsonTest extends BaseTest {
 //        user.setPwd("654321");
 //        user.setSex("女");
 
-        String s = "{\\\"isSelectAll\\\":\\\"1\\\",\\\"messageType\\\":\\\"1\\\",\\\"content\\\":\\\"测试111\\\",\\\"title\\\":\\\"测试1111\\\",\\\"sendTo\\\":\\\"{[{\\\\\\\"计算机系\\\\\\\"},{\\\\\\\"云计算系\\\\\\\"}]}\\\"}";
-
-
-
+//        String s = "{\\\"isSelectAll\\\":\\\"1\\\",\\\"messageType\\\":\\\"1\\\",\\\"content\\\":\\\"测试111\\\",\\\"title\\\":\\\"测试1111\\\",\\\"sendTo\\\":\\\"{[{\\\\\\\"计算机系\\\\\\\"},{\\\\\\\"云计算系\\\\\\\"}]}\\\"}";
+        topicDao.findOneById("1111112");
 
     }
-        @Test
-        public void testget() {
-            List<Picture> list = new ArrayList<>();
-            list=pictureDao.findAll("6666");
-            System.out.println(list);
-        }
+
+    @Test
+    public void testget() {
+        List<Picture> list = new ArrayList<>();
+        list = pictureDao.findAll("6666");
+        System.out.println(list);
+    }
 
 
 }

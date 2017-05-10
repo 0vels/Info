@@ -99,7 +99,7 @@ public class LikeServiceImpl implements LikeService {
     public void del(Like user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException {
         checkNull(user);
         //用户不存在
-        if (null == userDao.findOneById(user.getTopicid())) {
+        if (null == userDao.findOneByIdAndTopicid(user)) {
             throw new OtherThingsException("话题不存在");
         }
         int result = 0; //受影响的行数默认为0

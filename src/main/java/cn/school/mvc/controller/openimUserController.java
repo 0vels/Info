@@ -5,11 +5,9 @@ package cn.school.mvc.controller;
  */
 
 import cn.school.dao.OpenimUserDao;
+import cn.school.dao.QuerenDao;
 import cn.school.dao.UserInforDao;
-import cn.school.domain.IconAndMotto;
-import cn.school.domain.OpenimUser;
-import cn.school.domain.ResponseObj;
-import cn.school.domain.UserInfor;
+import cn.school.domain.*;
 import cn.school.exception.*;
 import cn.school.common.OpenimCommon;
 import cn.school.service.IconAndMottoService;
@@ -59,6 +57,8 @@ public class openimUserController {
     private UserInforService userInforService;
     @Autowired
     private IconAndMottoService iconAndMottoService;
+    @Autowired
+    private QuerenDao querenDao;
 
 /*
 将阿里数据库已存在，但是自己服务器不存在的用户加进数据库
@@ -130,11 +130,12 @@ public class openimUserController {
         OpenimUser openimUser = new OpenimUser(userid, password);
 
         addIMUser(userid, password);
-
+        Queren queren = new Queren(userid);
         int result1 = 0; //受影响的行数默认为0
         String msg;
         try {
             openimUserService.add(openimUser);
+            querenDao.add(queren);// TODO: 2017/5/10 add确认和话题排序 
             addUserInfor(userid);
             addIconAndMotto(userid);
             responseObj = new ResponseObj<OpenimUser>();

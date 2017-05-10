@@ -45,23 +45,24 @@ public class likeController {
     public Object addLike(String likejson) {
         Object result;
         Gson gson = new Gson();
-        Like topic1 = gson.fromJson(likejson, Like.class);
-        String userid = topic1.getUserid();
-        String topicid=topic1.getTopicid();
+        Like like = gson.fromJson(likejson, Like.class);
+        String userid = like.getUserid();
         String msg = "";
 
         try {
-            Like existedLike = likeDao.findOneByIdAndTopicid(new Like(topic1.getTopicid(),topic1.getUserid()));
+            Like existedLike = likeDao.findOneByIdAndTopicid(new Like(like.getTopicid(),like.getUserid()));
             if (existedLike!=null){
+
+                likeService.del(existedLike);
                 responseObj = new ResponseObj<OpenimUser>();
-                responseObj.setCode(ResponseObj.FAILED);
-                responseObj.setMsg("你已经点过赞了");
+                responseObj.setCode(ResponseObj.OK);
+                responseObj.setMsg("取消点赞成功");
                 result = new GsonUtils().toJson(responseObj);
                 return result;
             }
             UserInfor userInfor = userInforService.find(new UserInfor(userid));
-            topic1.setNickName(userInfor.getNicheng());
-            likeService.add(topic1);
+            like.setNickName(userInfor.getNicheng());
+            likeService.add(like);
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.OK);
             responseObj.setMsg("点赞成功");
