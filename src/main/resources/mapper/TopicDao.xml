@@ -24,9 +24,9 @@
     <insert id="add" parameterType="Topic">
         INSERT INTO
         `topic`
-        (`topicid`,`authorid`,`icon`,`nickName`,`create_time`,`content`)
+        (`topicid`,`authorid`,`icon`,`nickName`,`createtime`,`content`)
         VALUES
-        (#{topicid},#{authorid},#{icon},#{nickName},#{create_time},#{content})
+        (#{topicid},#{authorid},#{icon},#{nickName},#{createtime},#{content})
     </insert>
 
 

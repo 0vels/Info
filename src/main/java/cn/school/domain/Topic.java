@@ -12,7 +12,7 @@ public class Topic implements Serializable {
     private String authorid;//发起话题人的id
     private Object icon;//头像
     private String nickName;//昵称
-    private String create_time;//发起时间
+    private String createtime;//发起时间
     private String content;//内容
 //
 //    private String thumbPersonsNickname;//点赞人姓名
@@ -26,12 +26,12 @@ public class Topic implements Serializable {
         this.topicid = topicid;
     }
 
-    public Topic(String topicid,String authorid, Object icon, String nickName, String create_time, String content) {
+    public Topic(String topicid,String authorid, Object icon, String nickName, String createtime, String content) {
         this.topicid = topicid;
         this.authorid = authorid;
         this.icon = icon;
         this.nickName = nickName;
-        this.create_time = create_time;
+        this.createtime = createtime;
         this.content = content;
 //        this.photos = photos;
 //        this.thumbPersonsNickname = thumbPersonsNickname;
@@ -72,11 +72,11 @@ public class Topic implements Serializable {
     }
 
     public String getCreate_time() {
-        return create_time;
+        return createtime;
     }
 
-    public void setCreate_time(String create_time) {
-        this.create_time = create_time;
+    public void setCreate_time(String createtime) {
+        this.createtime = createtime;
     }
 
     public String getContent() {
@@ -124,7 +124,7 @@ public class Topic implements Serializable {
                 ", authorid='" + authorid + '\'' +
                 ", icon='" + icon + '\'' +
                 ", nickName='" + nickName + '\'' +
-                ", create_time='" + create_time + '\'' +
+                ", createtime='" + createtime + '\'' +
                 ", content='" + content + '\'' +
                 '}';
     }

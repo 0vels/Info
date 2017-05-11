@@ -1,13 +1,7 @@
 package cn.school.service.serviceImpl;
 
-import cn.school.dao.CommentDao;
-import cn.school.dao.LikeDao;
-import cn.school.dao.TopicDao;
-import cn.school.dao.UserDao;
-import cn.school.domain.Comment;
-import cn.school.domain.Like;
-import cn.school.domain.Topic;
-import cn.school.domain.User;
+import cn.school.dao.*;
+import cn.school.domain.*;
 import cn.school.exception.*;
 import cn.school.service.TopicService;
 import cn.school.service.UserService;
@@ -15,6 +9,7 @@ import cn.school.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,7 +22,8 @@ public class TopicServiceImpl implements TopicService {
     private LikeDao likeDao;
     @Autowired
     private CommentDao commentDao;
-
+    @Autowired
+    private UserInforDao userInforDao;
 
     public void checkNull(Topic user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException {
         //先检查用户是否存在
@@ -151,7 +147,15 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public List<Topic> findAll() throws  OtherThingsException  {
 
-        return userDao.findAll();
+        List<Topic> list =userDao.findAll();
+        List<Topic> uodateList=new ArrayList<>();
+        for (Topic topic:list){
+            String userid = topic.getAuthorid();
+            UserInfor userInfor = userInforDao.findOneById(userid);
+            topic.setIcon(userInfor.getTouxiang());
+            uodateList.add(topic);
+        }
+        return uodateList;
     }
 
 }

@@ -56,9 +56,9 @@ public class topicController {
         String msg = "";
 
         try {
-            UserInfor userInfor = userInforService.find(new UserInfor(userid));
-            String iconurl = userInfor.getTouxiang();
-            topic1.setIcon(iconurl);
+//            UserInfor userInfor = userInforService.find(new UserInfor(userid));
+//            String iconurl = userInfor.getTouxiang();
+//            topic1.setIcon(iconurl);
             topicService.add(topic1);
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.OK);
