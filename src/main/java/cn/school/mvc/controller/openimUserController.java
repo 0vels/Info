@@ -130,12 +130,12 @@ public class openimUserController {
         OpenimUser openimUser = new OpenimUser(userid, password);
 
         addIMUser(userid, password);
-        Queren queren = new Queren(userid);
+//        Queren queren = new Queren(userid);
         int result1 = 0; //受影响的行数默认为0
         String msg;
         try {
             openimUserService.add(openimUser);
-            querenDao.add(queren);// TODO: 2017/5/10 add确认和话题排序 
+//            querenDao.add(queren);// TODO: 2017/5/10 add确认和话题排序
             addUserInfor(userid);
             addIconAndMotto(userid);
             responseObj = new ResponseObj<OpenimUser>();

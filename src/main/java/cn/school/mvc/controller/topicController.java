@@ -22,15 +22,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 用户请求相关控制器
  */
 @Controller //标明本类是控制器
 @RequestMapping("/topic")  //外层地址
+//http://120.25.202.192/schoolinfo/topic/delTopic?topicid=1111113
 public class topicController {
 
     private ResponseObj responseObj;    //返回json数据的实体
@@ -54,11 +54,14 @@ public class topicController {
         Topic topic1 = gson.fromJson(topicjson, Topic.class);
         String userid = topic1.getAuthorid();
         String msg = "";
-
+        Date date = new Date();
+        SimpleDateFormat sf = new SimpleDateFormat("yyy-MM-dd HH:mm");
+        String time = sf.format(date);
         try {
 //            UserInfor userInfor = userInforService.find(new UserInfor(userid));
 //            String iconurl = userInfor.getTouxiang();
 //            topic1.setIcon(iconurl);
+            topic1.setCreate_time(time);
             topicService.add(topic1);
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.OK);
@@ -109,7 +112,8 @@ public class topicController {
 
         responseObj = new ResponseObj<OpenimUser>();
         responseObj.setCode(ResponseObj.FAILED);
-        responseObj.setMsg(msg);
+        responseObj.setMsg("获取话题列表失败");
+        responseObj.setData(msg);
         result = new GsonUtils().toJson(responseObj);
         return result;
     }
@@ -151,9 +155,9 @@ public class topicController {
             , method = RequestMethod.POST   //限定请求方式
             , produces = "application/json; charset=utf-8")
     public Object addPhotos(String topicid, MultipartFile[] file) throws IllegalStateException, IOException {
-        List list = new ArrayList();
+       // List list = new ArrayList();
         Object result = null;
-        ImageUtil imageUtil = new ImageUtil();
+//        ImageUtil imageUtil = new ImageUtil();
         // String images =  imageUtil.ImageUpload(file, request,response,session);
         if (file != null && file.length > 0) {
             List<String> urls = new ArrayList<>();

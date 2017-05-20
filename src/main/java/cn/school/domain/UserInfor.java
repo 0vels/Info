@@ -21,6 +21,7 @@ public class UserInfor implements Serializable {
     private String shenfen;
     private String touxiang;
     private String zuoyouming;
+    private String phone;
 
     public UserInfor() {
 
@@ -33,6 +34,14 @@ public class UserInfor implements Serializable {
     public UserInfor(String userid,String mima) {
         this.userid = userid;
         this.mima = mima;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getUserid() {
@@ -173,6 +182,7 @@ public class UserInfor implements Serializable {
                 ", shenfen='" + shenfen + '\'' +
                 ", touxiang='" + touxiang + '\'' +
                 ", zuoyouming='" + zuoyouming + '\'' +
+                ", phone='" + phone + '\'' +
                 '}';
     }
 }

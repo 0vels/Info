@@ -60,10 +60,10 @@ public class TopicServiceImpl implements TopicService {
 //            throw new OtherThingsException("消息不能为空");
 //        }
         //已经存在相同用户
-        if (null != userDao.findOneById(user.getTopicid())) {
-            //存在相同的用户异常
-            throw new UserAireadyExistException("话题重复");
-        }
+//        if (null != userDao.findOneById(user.getTopicid())) {
+//            //存在相同的用户异常
+//            throw new UserAireadyExistException("话题重复");
+//        }
         int result = 0; //受影响的行数默认为0
         try {
             result = userDao.add(user);

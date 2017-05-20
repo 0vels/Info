@@ -12,20 +12,31 @@
     TID = #{TID}
 </select>
 
-    <select id="findAll" resultType="Queren" parameterType="String">
+    <select id="findOneByuserIDAndTID" resultType="Queren" parameterType="Queren">
+        SELECT
+        *
+        FROM
+        `queren`
+        WHERE
+        (userid =#{userid},TID = #{TID})
+    </select>
+
+    <select id="findAll" resultType="Queren" parameterType="Integer">
     SELECT
     *
     FROM
     `queren`
+    WHERE
+    TID = #{TID}
     </select>
 
     <!--增加语句-->
     <insert id="add" parameterType="Queren">
         INSERT INTO
         `queren`
-        (`TID`,`xuehao`,`userid`,`queren`)
+        (`TID`,`userid`,`queren`)
         VALUES
-        (#{TID},#{xuehao},#{userid},#{queren})
+        (#{TID},#{userid},#{queren})
     </insert>
 
     <!-- 删除 -->

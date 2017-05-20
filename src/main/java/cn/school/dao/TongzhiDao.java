@@ -20,5 +20,7 @@ public interface TongzhiDao extends Dao<TongZhi> {
 
     TongZhi findOneById(Serializable Id);
 
+    List<TongZhi> findAllByMessageType(int messageType);
+
     List<TongZhi> findAll();
 }

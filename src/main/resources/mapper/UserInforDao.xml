@@ -12,13 +12,21 @@
     userid = #{userId}
 </select>
 
+    <select id="findAll" resultType="UserInfor">
+        SELECT
+        *
+        FROM
+        `userinfor`
+
+    </select>
+
     <!--增加语句-->
     <insert id="add" parameterType="UserInfor">
         INSERT INTO
         `userinfor`
-        (`userid`,`mima`,`nicheng`,`xingming`,`xibie`,`banji`,`xuehao`,`xingbie`,`shengri`,`minzu`,`jia`,`xingqu`,`shenfen`,`touxiang`,`zuoyouming`)
+        (`userid`,`mima`,`nicheng`,`xingming`,`xibie`,`banji`,`xuehao`,`xingbie`,`shengri`,`minzu`,`jia`,`xingqu`,`shenfen`,`touxiang`,`zuoyouming`,`phone`)
         VALUES
-        (#{userid},#{mima},#{nicheng},#{xingming},#{xibie},#{banji},#{xuehao},#{xingbie},#{shengri},#{minzu},#{jia},#{xingqu},#{shenfen},#{touxiang},#{zuoyouming})
+        (#{userid},#{mima},#{nicheng},#{xingming},#{xibie},#{banji},#{xuehao},#{xingbie},#{shengri},#{minzu},#{jia},#{xingqu},#{shenfen},#{touxiang},#{zuoyouming},#{phone})
     </insert>
 
     <!--(`address`,`age`,`career`,`email`,`extra`,`gender`,`gmt_modified`,`icon_url`,`mobile`,`name`,`nick`,`password`,`mobile`,`mobile`,`mobile`,`mobile`,`mobile`,`mobile`,`mobile`)-->
@@ -39,7 +47,7 @@
         `userinfor`
         SET
         `userid`=#{userid}, `mima`=#{mima}, `nicheng`=#{nicheng}, `xingming`=#{xingming}, `xibie`=#{xibie}, `banji`=#{banji}, `xuehao`=#{xuehao},
-         `xingbie`=#{xingbie}, `shengri`=#{shengri}, `minzu`=#{minzu}, `jia`=#{jia}, `xingqu`=#{xingqu}, `shenfen`=#{shenfen}, `touxiang`=#{touxiang}, `zuoyouming`=#{zuoyouming}
+         `xingbie`=#{xingbie}, `shengri`=#{shengri}, `minzu`=#{minzu}, `jia`=#{jia}, `xingqu`=#{xingqu}, `shenfen`=#{shenfen}, `touxiang`=#{touxiang}, `zuoyouming`=#{zuoyouming}, `phone`=#{phone}
         WHERE
         `userid`=#{userid};
     </update>

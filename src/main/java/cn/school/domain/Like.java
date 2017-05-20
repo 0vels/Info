@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class Like implements Serializable {
     private String topicid;//会话的id
-    private String userid;//发起话题人的id
+    private String userid;//点赞人的id
     private String nickName;//昵称
 
     public Like( ){

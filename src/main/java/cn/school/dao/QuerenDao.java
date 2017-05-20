@@ -19,5 +19,8 @@ public interface QuerenDao extends Dao<Queren> {
 
     Queren findOneById(Serializable Id);
 
-    List<Queren> findAll(Serializable topicid);
+    Queren findOneByuserIDAndTID(Queren user);
+//    Queren findOneByuserIDAndTID(Serializable Id,int TID);
+
+    List<Queren> findAll(int TID);
 }

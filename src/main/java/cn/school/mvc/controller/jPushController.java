@@ -7,7 +7,13 @@ package cn.school.mvc.controller;
 import cn.school.JPush.mpush;
 import cn.school.dao.QuerenDao;
 import cn.school.dao.TongzhiDao;
+import cn.school.dao.UserInforDao;
 import cn.school.domain.*;
+import cn.school.exception.UserCanNotBeNullException;
+import cn.school.exception.UserNameCanNotBeNullException;
+import cn.school.exception.UserPwdCanNotBeNullException;
+import cn.school.service.QuerenService;
+import cn.school.service.UserInforService;
 import cn.school.utils.GsonUtils;
 import cn.school.utils.JSONtool;
 import com.google.gson.*;
@@ -19,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -39,39 +46,45 @@ public class jPushController {
     private TongzhiDao tongzhiDao;
     @Autowired
     private QuerenDao querenDao;
+    @Autowired
+    private QuerenService querenService;
+    @Autowired
+    private UserInforService userInforService;
+    @Autowired
+    private UserInforDao userInforDao;
 
-    @RequestMapping(value = "/addLike"   //内层地址
-            , method = RequestMethod.GET   //限定请求方式
-            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
-    @ResponseBody
-    public Object addLike(String likejson) {
-        Object result;
-        Gson gson = new Gson();
-        Like topic1 = gson.fromJson(likejson, Like.class);
-
-        String msg = "";
-
-        try {
-//            likeService.add(topic1);
-            responseObj = new ResponseObj<OpenimUser>();
-            responseObj.setCode(ResponseObj.OK);
-            responseObj.setMsg("点赞成功");
-            result = new GsonUtils().toJson(responseObj);
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            msg = e.getMessage();
-        }
-
-        responseObj = new ResponseObj<OpenimUser>();
-        responseObj.setCode(ResponseObj.FAILED);
-        responseObj.setMsg(msg);
-        result = new GsonUtils().toJson(responseObj);
-        return result;
-    }
+//    @RequestMapping(value = "/addLike"   //内层地址
+//            , method = RequestMethod.GET   //限定请求方式
+//            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+//    @ResponseBody
+//    public Object addLike(String likejson) {
+//        Object result;
+//        Gson gson = new Gson();
+//        Like topic1 = gson.fromJson(likejson, Like.class);
+//
+//        String msg = "";
+//
+//        try {
+////            likeService.add(topic1);
+//            responseObj = new ResponseObj<OpenimUser>();
+//            responseObj.setCode(ResponseObj.OK);
+//            responseObj.setMsg("点赞成功");
+//            result = new GsonUtils().toJson(responseObj);
+//            return result;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            msg = e.getMessage();
+//        }
+//
+//        responseObj = new ResponseObj<OpenimUser>();
+//        responseObj.setCode(ResponseObj.FAILED);
+//        responseObj.setMsg(msg);
+//        result = new GsonUtils().toJson(responseObj);
+//        return result;
+//    }
 
     @RequestMapping(value = "/fabu"   //内层地址
-            , method = RequestMethod.POST   //限定请求方式
+            , method = RequestMethod.GET   //限定请求方式
             , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
     public Object fabu(String tongzhijson) {
@@ -108,7 +121,7 @@ public class jPushController {
             type = "普通信息:";
         int tag = -1;
         Gson names = new Gson();
-        List<String> list = names.fromJson(tz.getnames(), new TypeToken<List<String>>() {
+        ArrayList<String> list = names.fromJson(tz.getnames(), new TypeToken<ArrayList<String>>() {
         }.getType());
         extradata extra = new extradata(dateNowStr, tz.getSendPersonName(), tz.getMessageType(), tz.getnames(), TID);
         //传递的附加字段:通知时间，接收群体，消息类型， 通知存在数据库的ID
@@ -145,7 +158,7 @@ public class jPushController {
                 tz.setTime(dateNowStr);
                 tz.setTID(TID);
 //                TZtomysql(tz, TID);
-                tongzhiDao.add(tz);
+//                tongzhiDao.add(tz);
                 tongzhiDao.add(tz);
                 responseObj = new ResponseObj<OpenimUser>();
                 responseObj.setCode(ResponseObj.OK);
@@ -165,49 +178,173 @@ public class jPushController {
 
 
     @RequestMapping(value = "/queren"   //内层地址
-            , method = RequestMethod.POST   //限定请求方式
+            , method = RequestMethod.GET   //限定请求方式
             , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
-    public Object queren(String userid, long TID) {
+    public Object queren(String userid, int TID) {
 
         Gson gson = new Gson();
-        Object result1;
-        Queren queren = new Queren(userid,TID);
+        Object result1;// TODO: 2017/5/19   //TID是int
+        Queren queren = new Queren(userid, TID);
         Calendar now = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yy-MM-dd");
         String dateNowStr = sdf.format(now.getTime());
+        String msg = "";
         int result = 0; //受影响的行数默认为0
         try {
-            result = querenDao.add(queren);
+            UserInfor userInfor = userInforDao.findOneById(userid);
+            queren.setBanji(userInfor.getBanji());
+            queren.setXibie(userInfor.getXibie());
+            queren.setPhone(userInfor.getPhone());
+            queren.setName(userInfor.getXingming());
+            queren.setUserid(userInfor.getUserid());
+            queren.setName(userInfor.getXingming());
+            queren.setXuehao(userInfor.getXuehao());
+            queren.setQueshi(dateNowStr);
+            querenService.add(queren);
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.OK);
+            responseObj.setMsg("确认成功");
+            responseObj.setData("确认成功");
+            result1 = new GsonUtils().toJson(responseObj);
+            return result1;
+        } catch (UserCanNotBeNullException e) {
+            e.printStackTrace();
+            msg = e.getMessage();
+        } catch (UserNameCanNotBeNullException e) {
+            e.printStackTrace();
+            msg = e.getMessage();
+        } catch (UserPwdCanNotBeNullException e) {
+            e.printStackTrace();
+            msg = e.getMessage();
         } catch (Exception e) {
-            System.out.println("确认失败" + e.getMessage());
-            //其他失败异常
+            e.printStackTrace();
+            msg = e.getMessage();
+        }
+        responseObj = new ResponseObj<OpenimUser>();
+        responseObj.setCode(ResponseObj.FAILED);
+        responseObj.setMsg("确认失败");
+        responseObj.setData(msg);
+        result1 = new GsonUtils().toJson(responseObj);
+        return result1;
+
+    }
+
+
+    @RequestMapping(value = "/getQuerenOrNot"   //内层地址
+            , method = RequestMethod.GET   //限定请求方式
+            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+    @ResponseBody
+    public Object getQuerenOrNot(int TID, String isQueren) {
+        Object result1;
+        List<UserInfor> userInforList = new ArrayList<>();
+        List<Queren> querenList = new ArrayList<>();
+        List<UserInfor> returnlist = new ArrayList<>();
+        List<String> alluseridlist = new ArrayList<>();
+        List<String> querenuseridlist = new ArrayList<>();
+        UserInfor finduserInfor;
+        try {
+            userInforList = userInforService.findAll();
+            querenList = querenDao.findAll(TID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            //这里是正确的代码
+//            for (Queren queren : querenList) {
+//                querenuseridlist.add(queren.getUserid());
+//            }
+//            for (UserInfor userInfor : userInforList) {
+//                alluseridlist.add(userInfor.getUserid());
+//            }
+//            alluseridlist.removeAll(querenuseridlist);
+//            for (String userid : alluseridlist) {
+//                UserInfor userInfor = userInforDao.findOneById(userid);
+//                returnlist.add(userInfor);
+//            }
+
+
+            for (Queren queren : querenList) {
+                querenuseridlist.add(queren.getUserid());
+            }
+            for (UserInfor userInfor : userInforList) {
+                alluseridlist.add(userInfor.getUserid());
+            }
+            alluseridlist.removeAll(querenuseridlist);
+            for (String userid : isQueren.equals("yes") ? querenuseridlist : alluseridlist) {
+                finduserInfor = new UserInfor(userid);
+                UserInfor userInfor1 = userInforService.find(finduserInfor);
+                returnlist.add(userInfor1);
+            }
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.OK);
+            responseObj.setMsg("获取成功");
+            responseObj.setData(returnlist);
+            result1 = new GsonUtils().toJson(responseObj);
+            return result1;
+        } catch (Exception e) {
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.FAILED);
-            responseObj.setMsg("确认失败");
+            responseObj.setMsg("获取失败");
             responseObj.setData(e.getMessage());
             result1 = new GsonUtils().toJson(responseObj);
             return result1;
         }
-        if (result > 0) {
-            System.out.println("确认成功");
-            responseObj = new ResponseObj<OpenimUser>();
-            responseObj.setCode(ResponseObj.OK);
-            responseObj.setMsg("确认成功");
-            result1 = new GsonUtils().toJson(responseObj);
-            return result1;
 
-        }else {
-            responseObj = new ResponseObj<OpenimUser>();
-            responseObj.setCode(ResponseObj.FAILED);
-            responseObj.setMsg("确认失败");
-            result1 = new GsonUtils().toJson(responseObj);
-            return result1;
-        }
+
+//        if (result > 0) {
+//            System.out.println("确认成功");
+//            responseObj = new ResponseObj<OpenimUser>();
+//            responseObj.setCode(ResponseObj.OK);
+//            responseObj.setMsg("确认成功");
+//            result1 = new GsonUtils().toJson(responseObj);
+//            return result1;
+//
+//        } else {
+//            responseObj = new ResponseObj<OpenimUser>();
+//            responseObj.setCode(ResponseObj.FAILED);
+//            responseObj.setMsg("确认失败");
+//            result1 = new GsonUtils().toJson(responseObj);
+//            return result1;
+//        }
 
 
 //        return flag;//推送标志成功返回 true 失败返回false
         //
+    }
+
+
+    @RequestMapping(value = "/getMessage"   //内层地址
+            , method = RequestMethod.GET   //限定请求方式
+            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+    @ResponseBody
+    public Object getMessage(int messageType) {
+        List<TongZhi> tongZhiList = new ArrayList<>();
+        Gson gson = new Gson();
+        Object result1;
+//        Queren queren = new Queren(userid, TID);
+
+        int result = 0; //受影响的行数默认为0
+        try {
+            tongZhiList = tongzhiDao.findAllByMessageType(messageType);
+        } catch (Exception e) {
+            System.out.println("获取失败" + e.getMessage());
+            //其他失败异常
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.FAILED);
+            responseObj.setMsg("获取失败");
+            responseObj.setData(e.getMessage());
+            result1 = new GsonUtils().toJson(responseObj);
+            return result1;
+        }
+
+        System.out.println("获取成功");
+        responseObj = new ResponseObj<OpenimUser>();
+        responseObj.setCode(ResponseObj.OK);
+        responseObj.setMsg("获取成功");
+        responseObj.setData(tongZhiList);
+        result1 = new GsonUtils().toJson(responseObj);
+        return result1;
     }
 
     private static final long serialVersionUID = 1L;

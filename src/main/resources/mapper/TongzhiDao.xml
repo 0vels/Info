@@ -12,6 +12,15 @@
     TID = #{TID}
 </select>
 
+    <select id="findAllByMessageType" resultType="Tongzhi" parameterType="Integer">
+        SELECT
+        *
+        FROM
+        `tongzhi`
+        WHERE
+        messageType = #{messageType}
+    </select>
+
     <select id="findAll" resultType="Tongzhi" parameterType="String">
     SELECT
     *
