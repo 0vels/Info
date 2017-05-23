@@ -18,7 +18,7 @@
         FROM
         `queren`
         WHERE
-        (userid =#{userid},TID = #{TID})
+        userid =#{userid} AND TID = #{TID}
     </select>
 
     <select id="findAll" resultType="Queren" parameterType="Integer">

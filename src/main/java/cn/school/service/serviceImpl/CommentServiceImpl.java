@@ -101,21 +101,21 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public void del(Comment user) throws UserCanNotBeNullException, UserNameCanNotBeNullException, UserPwdCanNotBeNullException, OtherThingsException  {
-        checkNull(user);
+//        checkNull(user);
         //用户不存在
-        if (null == userDao.findOneById(user.getTopicid())) {
-            throw new OtherThingsException("话题不存在");
+        if (null == userDao.findOneById(user.getCommentid())) {
+            throw new OtherThingsException("评论不存在");
         }
         int result = 0; //受影响的行数默认为0
         try {
             result = userDao.del(user);
         } catch (Exception e) {
-            System.out.println("删除话题失败"+e.getMessage());
+            System.out.println("删除评论失败"+e.getMessage());
             //其他失败异常
-            throw new OtherThingsException("删除话题失败,"+e.getMessage());
+            throw new OtherThingsException("删除评论失败,"+e.getMessage());
         }
         if (result > 0)
-            System.out.println("删除话题成功");
+            System.out.println("删除评论成功");
     }
     /**
      * 更新

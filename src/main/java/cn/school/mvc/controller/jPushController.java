@@ -16,8 +16,10 @@ import cn.school.service.QuerenService;
 import cn.school.service.UserInforService;
 import cn.school.utils.GsonUtils;
 import cn.school.utils.JSONtool;
+import cn.school.utils.StringUtils;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.taobao.api.internal.toplink.embedded.websocket.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,7 +86,7 @@ public class jPushController {
 //    }
 
     @RequestMapping(value = "/fabu"   //内层地址
-            , method = RequestMethod.GET   //限定请求方式
+            , method = RequestMethod.POST   //限定请求方式
             , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
     @ResponseBody
     public Object fabu(String tongzhijson) {
@@ -100,10 +102,10 @@ public class jPushController {
         Gson gson = new Gson();
         TongZhi tz;
         Object result;
-        JsonObject returnData = new JsonParser().parse(tongzhijson).getAsJsonObject();
+//        JsonObject returnData = new JsonParser().parse(tongzhijson).getAsJsonObject();
 //        TongZhi tz = jt.jsontotz(tongzhijson, TongZhi.class);//解析json存到TongZhi 类
         try {
-            tz = gson.fromJson(returnData, TongZhi.class);
+            tz = gson.fromJson(tongzhijson, TongZhi.class);
         } catch (IllegalStateException | JsonSyntaxException exception) {
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.FAILED);
@@ -121,16 +123,18 @@ public class jPushController {
             type = "普通信息:";
         int tag = -1;
         Gson names = new Gson();
-        ArrayList<String> list = names.fromJson(tz.getnames(), new TypeToken<ArrayList<String>>() {
-        }.getType());
-        extradata extra = new extradata(dateNowStr, tz.getSendPersonName(), tz.getMessageType(), tz.getnames(), TID);
+        String send = tz.getSendTo();
+//        JsonArray list = names.fromJson(StringUtils.ListToString(send), new TypeToken<JsonArray>() {}.getType());
+        List<String> list = (List) StringUtils.StringToList(send);
+        extradata extra = new extradata(dateNowStr, tz.getSendPersonName(), tz.getMessageType(), send, TID);
         //传递的附加字段:通知时间，接收群体，消息类型， 通知存在数据库的ID
 
         if (tz.getIsSelectAll() == 0) {
             //没有选择全选，进行标签推送
-            for (String name : list) {
+            for (int i = 0; i < list.size(); i++) {
+
                 //循环读取标签组然后进行推送
-                tag = mpush.sendTotagAndroid(type + tz.getTitle(), tz.getContent(), name, jt.Tojsonstr(extra));
+                tag = mpush.sendTotagAndroid(type + tz.getTitle(), tz.getContent(), list.get(i), jt.Tojsonstr(extra));
                 if (tag == 1)
                 // System.out.println("成功推送");
                 //只要一个发送成功就说明消息发送成功（老师发到服务器成功）

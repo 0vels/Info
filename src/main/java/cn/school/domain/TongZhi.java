@@ -5,6 +5,7 @@ import cn.school.utils.JSONtool;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by wang on 2017/5/4.
@@ -21,6 +22,7 @@ public class TongZhi implements Serializable{
     private String content;//通知内容
     private String title;//通知标题
     private String sendTo;//接收群体
+//    private List<String> sendTo;//接收群体
 
 
 
@@ -39,16 +41,16 @@ public class TongZhi implements Serializable{
 
     }
 
-    public TongZhi(int imessageType, String sendPersonName, String title, String icontent, String sendTo, long ID, String time) {
-        this.content = icontent;
-        this.sendPersonName = sendPersonName;
-
-        this.title = title;
-        imessageType = imessageType;
-        this.sendTo = sendTo;
-        this.TID = ID;
-        this.time = time;
-    }
+//    public TongZhi(int imessageType, String sendPersonName, String title, String icontent, String[] sendTo, long ID, String time) {
+//        this.content = icontent;
+//        this.sendPersonName = sendPersonName;
+//
+//        this.title = title;
+//        imessageType = imessageType;
+//        this.sendTo = sendTo;
+//        this.TID = ID;
+//        this.time = time;
+//    }
 
 //    public static void main(String[] args) {
 //        JSONtool jt = new JSONtool();
@@ -103,10 +105,6 @@ public class TongZhi implements Serializable{
         this.title = title;
     }
 
-    public String getnames() {
-        return sendTo;
-    }
-
     public String getTime() {
         return time;
     }
@@ -138,6 +136,14 @@ public class TongZhi implements Serializable{
     public void setSendTo(String sendTo) {
         this.sendTo = sendTo;
     }
+
+    //    public List<String> getSendTo() {
+//        return sendTo;
+//    }
+//
+//    public void setSendTo(List<String> sendTo) {
+//        this.sendTo = sendTo;
+//    }
 
     @Override
     public String toString() {
