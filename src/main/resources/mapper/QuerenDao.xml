@@ -34,9 +34,9 @@
     <insert id="add" parameterType="Queren">
         INSERT INTO
         `queren`
-        (`TID`,`userid`,`queren`)
+        (`TID`,`userid`,`queren`,`name`,`xibie`,`banji`,`queshi`)
         VALUES
-        (#{TID},#{userid},#{queren})
+        (#{TID},#{userid},#{queren},#{name},#{xibie},#{banji},#{queshi})
     </insert>
 
     <!-- 删除 -->
