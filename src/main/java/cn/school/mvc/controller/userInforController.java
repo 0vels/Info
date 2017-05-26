@@ -90,8 +90,8 @@ public class userInforController {
         String oldFileName = file.getOriginalFilename(); //获取上传文件的原名
         //存储图片的物理路径
         Object result;
-        String file_path = "D:/tomcat/webapps";    //本地地址
-//        String file_path = "C:/hostadmin/tomcat80/webapps/ROOT/file";    //服务器地址
+//        String file_path = "D:/tomcat/webapps";    //本地地址
+        String file_path = "C:/hostadmin/tomcat80/webapps/ROOT/file";    //服务器地址
 //        String file_path = session.getServletContext().getRealPath("webapps/ROOT/");
 
         //上传图片

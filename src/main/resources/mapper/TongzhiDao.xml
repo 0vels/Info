@@ -21,6 +21,16 @@
         messageType = #{messageType}
     </select>
 
+
+    <select id="findAllByUserid" resultType="Tongzhi" parameterType="String">
+        SELECT
+        *
+        FROM
+        `tongzhi`
+        WHERE
+        sendPersonName = #{userid}
+    </select>
+
     <select id="findAll" resultType="Tongzhi" parameterType="String">
     SELECT
     *

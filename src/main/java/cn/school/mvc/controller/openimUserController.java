@@ -183,7 +183,7 @@ public class openimUserController {
         Gson gson = new Gson();    //注册和修改个人资料相关
 
         UserInfor userInfor = new UserInfor(userid);
-        userInfor.setShenfen("学生");
+        userInfor.setShenfen("teacher");
         String msg = "";
 
         try {

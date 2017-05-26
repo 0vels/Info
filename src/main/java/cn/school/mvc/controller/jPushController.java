@@ -267,19 +267,6 @@ public class jPushController {
             e.printStackTrace();
         }
         try {
-            //这里是正确的代码
-//            for (Queren queren : querenList) {
-//                querenuseridlist.add(queren.getUserid());
-//            }
-//            for (UserInfor userInfor : userInforList) {
-//                alluseridlist.add(userInfor.getUserid());
-//            }
-//            alluseridlist.removeAll(querenuseridlist);
-//            for (String userid : alluseridlist) {
-//                UserInfor userInfor = userInforDao.findOneById(userid);
-//                returnlist.add(userInfor);
-//            }
-
 
             for (Queren queren : querenList) {
                 querenuseridlist.add(queren.getUserid());
@@ -337,6 +324,7 @@ public class jPushController {
     @ResponseBody
     public Object getMessage(int messageType) {
         List<TongZhi> tongZhiList = new ArrayList<>();
+        List<TongzhiSendto> tongzhiSendtoList = new ArrayList<>();
         Gson gson = new Gson();
         Object result1;
 //        Queren queren = new Queren(userid, TID);
@@ -355,16 +343,81 @@ public class jPushController {
             return result1;
         }
 
+        for (TongZhi tongZhi:tongZhiList){
+            List<String> sendTolist = (List) StringUtils.StringToList(tongZhi.getSendTo());
+            TongzhiSendto tongzhiSendto = new TongzhiSendto();
+            tongzhiSendto.setTID(tongZhi.getTID());
+            tongzhiSendto.setContent(tongZhi.getContent());
+            tongzhiSendto.setIsSelectAll(tongZhi.getIsSelectAll());
+            tongzhiSendto.setMessageType(tongZhi.getMessageType());
+            tongzhiSendto.setSendPersonName(tongZhi.getSendPersonName());
+            tongzhiSendto.setTime(tongZhi.getTime());
+            tongzhiSendto.setTitle(tongZhi.getTitle());
+            tongzhiSendto.setSendTolist(sendTolist);
+            tongzhiSendtoList.add(tongzhiSendto);
+        }
+
+        //返回给客户端tongzhisendto
+
         System.out.println("获取成功");
         responseObj = new ResponseObj<OpenimUser>();
         responseObj.setCode(ResponseObj.OK);
         responseObj.setMsg("获取成功");
-        responseObj.setData(tongZhiList);
+        responseObj.setData(tongzhiSendtoList);
         result1 = new GsonUtils().toJson(responseObj);
         return result1;
     }
 
-    private static final long serialVersionUID = 1L;
+   //返回自己发送的信息
+    @RequestMapping(value = "/getMyMessage"   //内层地址
+            , method = RequestMethod.GET   //限定请求方式
+            , produces = "application/json; charset=utf-8") //设置返回值是json数据类型
+    @ResponseBody
+    public Object getMyMessage(String userid) {
+        List<TongZhi> tongZhiList = new ArrayList<>();
+        List<TongzhiSendto> tongzhiSendtoList = new ArrayList<>();
+        Gson gson = new Gson();
+        Object result1;
+//        Queren queren = new Queren(userid, TID);
+
+        int result = 0; //受影响的行数默认为0
+        try {
+            tongZhiList = tongzhiDao.findAllByUserid(userid);
+        } catch (Exception e) {
+            System.out.println("获取失败" + e.getMessage());
+            //其他失败异常
+            responseObj = new ResponseObj<OpenimUser>();
+            responseObj.setCode(ResponseObj.FAILED);
+            responseObj.setMsg("获取失败");
+            responseObj.setData(e.getMessage());
+            result1 = new GsonUtils().toJson(responseObj);
+            return result1;
+        }
+
+        for (TongZhi tongZhi:tongZhiList){
+            List<String> sendTolist = (List) StringUtils.StringToList(tongZhi.getSendTo());
+            TongzhiSendto tongzhiSendto = new TongzhiSendto();
+            tongzhiSendto.setTID(tongZhi.getTID());
+            tongzhiSendto.setContent(tongZhi.getContent());
+            tongzhiSendto.setIsSelectAll(tongZhi.getIsSelectAll());
+            tongzhiSendto.setMessageType(tongZhi.getMessageType());
+            tongzhiSendto.setSendPersonName(tongZhi.getSendPersonName());
+            tongzhiSendto.setTime(tongZhi.getTime());
+            tongzhiSendto.setTitle(tongZhi.getTitle());
+            tongzhiSendto.setSendTolist(sendTolist);
+            tongzhiSendtoList.add(tongzhiSendto);
+        }
+
+        System.out.println("获取成功");
+        responseObj = new ResponseObj<OpenimUser>();
+        responseObj.setCode(ResponseObj.OK);
+        responseObj.setMsg("获取成功");
+        responseObj.setData(tongzhiSendtoList);
+        result1 = new GsonUtils().toJson(responseObj);
+        return result1;
+    }
+
+//    private static final long serialVersionUID = 1L;
 //    public void mqrtoTZdz(Queren  imqr){
 //        //将信息插入到Tqrdz(qian-ru-dui-ying)表：存放所有关于嵌入式的通知，
 //        //已经存在的字段有学号--姓名-电话，需要添加的字段为Tqueren(通知确认)=yes,Tqueshi（确认时间，当前系统年月日）

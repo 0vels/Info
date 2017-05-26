@@ -22,5 +22,7 @@ public interface TongzhiDao extends Dao<TongZhi> {
 
     List<TongZhi> findAllByMessageType(int messageType);
 
+    List<TongZhi> findAllByUserid(String userid);
+
     List<TongZhi> findAll();
 }

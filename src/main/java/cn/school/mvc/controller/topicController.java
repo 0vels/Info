@@ -91,15 +91,21 @@ public class topicController {
     public Object getAllTopic() {
         Object result;
         List<Topic> topicList;
+        List<Topic> returnTopicList = new ArrayList<>();
 
         String msg = "";
 
         try {
             topicList = topicService.findAll();
+            for (Topic topic:topicList){
+                UserInfor userInfor = userInforService.find(new UserInfor(topic.getAuthorid()));
+                topic.setIcon(userInfor.getTouxiang());
+                returnTopicList.add(topic);
+            }
             responseObj = new ResponseObj<OpenimUser>();
             responseObj.setCode(ResponseObj.OK);
             responseObj.setMsg("获取话题列表成功");
-            responseObj.setData(topicList);
+            responseObj.setData(returnTopicList);
             result = new GsonUtils().toJson(responseObj);
             return result;
         } catch (OtherThingsException e) {
